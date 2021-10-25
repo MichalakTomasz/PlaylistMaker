@@ -1,4 +1,4 @@
-﻿namespace Playlist.Wrappers
+﻿namespace PlaylistMaker.Wrappers
 {
     public interface IValidation
     {

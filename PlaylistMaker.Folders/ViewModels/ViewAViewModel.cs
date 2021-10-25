@@ -1,7 +1,7 @@
-﻿using Playlist.Wrappers;
-using PlaylistMaker.Commons;
+﻿using PlaylistMaker.Commons;
 using PlaylistMaker.Events;
 using PlaylistMaker.Services;
+using PlaylistMaker.Wrappers;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.Generic;
@@ -20,9 +20,9 @@ namespace PlaylistMaker.Folders.ViewModels
         {
             eventAggregator.GetEvent<ExplorerEvent>().Subscribe(e =>
             {
-                var fileAudioWrappers =  e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service));
+                var fileAudioWrappers =  e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service)).ToList();
                 FileAudioWrappers = new ObservableCollection<FileAudioWrapper>(fileAudioWrappers);
-            });
+            }, ThreadOption.UIThread, true);
         }
 
         private IEnumerable<string> _filesFullPath;

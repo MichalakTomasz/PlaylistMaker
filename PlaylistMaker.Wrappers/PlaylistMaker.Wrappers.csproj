@@ -7,8 +7,8 @@
     <ProjectGuid>{09E5D4EC-37C3-4B3F-922C-B28C3D403D22}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Playlist.Wrappers</RootNamespace>
-    <AssemblyName>Playlist.Wrappers</AssemblyName>
+    <RootNamespace>PlaylistMaker.Wrappers</RootNamespace>
+    <AssemblyName>PlaylistMaker.Wrappers</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

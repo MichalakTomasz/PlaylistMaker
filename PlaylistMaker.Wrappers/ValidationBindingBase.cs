@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Playlist.Wrappers
+namespace PlaylistMaker.Wrappers
 {
     public abstract class ValidationBindingBase : BindableBase, INotifyDataErrorInfo, IValidation
     {

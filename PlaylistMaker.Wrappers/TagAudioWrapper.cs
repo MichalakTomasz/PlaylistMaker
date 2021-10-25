@@ -1,7 +1,7 @@
 ﻿using PlaylistMaker.Models;
 using System;
 
-namespace Playlist.Wrappers
+namespace PlaylistMaker.Wrappers
 {
     public class TagAudioWrapper<TBase> : WrapperBase<TBase>
     {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
-namespace Playlist.Wrappers
+namespace PlaylistMaker.Wrappers
 {
     public class WrapperBase<TBase> : ValidationBase, IValidation
     {
@@ -16,7 +11,6 @@ namespace Playlist.Wrappers
 
         public WrapperBase() { }
 
-        public void SetModel(TBase model) => Model = model;
         protected void SetValue<T>(T value, [CallerMemberName]string propertyName = default)
         {
             Validate(value, propertyName);

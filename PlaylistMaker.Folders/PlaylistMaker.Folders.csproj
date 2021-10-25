@@ -78,10 +78,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Playlist.Wrappers\PlaylistMaker.Wrappers.csproj">
-      <Project>{09E5D4EC-37C3-4B3F-922C-B28C3D403D22}</Project>
-      <Name>PlaylistMaker.Wrappers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlaylistMaker.Commons\PlaylistMaker.Commons.csproj">
       <Project>{0D16D173-3B70-473D-9337-C1394D68F1F9}</Project>
       <Name>PlaylistMaker.Commons</Name>
@@ -97,6 +93,10 @@
     <ProjectReference Include="..\PlaylistMaker.Services\PlaylistMaker.Services.csproj">
       <Project>{D1984D9F-F397-4FED-A38B-7F6004E75B85}</Project>
       <Name>PlaylistMaker.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlaylistMaker.Wrappers\PlaylistMaker.Wrappers.csproj">
+      <Project>{09e5d4ec-37c3-4b3f-922c-b28c3d403d22}</Project>
+      <Name>PlaylistMaker.Wrappers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

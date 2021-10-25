@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Models", "Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Services", "PlaylistMaker.Services\PlaylistMaker.Services.csproj", "{D1984D9F-F397-4FED-A38B-7F6004E75B85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Wrappers", "Playlist.Wrappers\PlaylistMaker.Wrappers.csproj", "{09E5D4EC-37C3-4B3F-922C-B28C3D403D22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Wrappers", "PlaylistMaker.Wrappers\PlaylistMaker.Wrappers.csproj", "{09E5D4EC-37C3-4B3F-922C-B28C3D403D22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

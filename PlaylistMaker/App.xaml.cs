@@ -8,6 +8,7 @@ using PlaylistMaker.Models;
 using PlaylistMaker.Playlist;
 using PlaylistMaker.Services;
 using PlaylistMaker.Views;
+using PlaylistMaker.Wrappers;
 using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;

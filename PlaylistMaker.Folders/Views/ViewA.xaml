@@ -16,7 +16,7 @@
         <DataGrid Grid.Row="0" ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding Id3v1.Title}"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
             </DataGrid.Columns>
         </DataGrid>
         <DockPanel Grid.Row="1">
