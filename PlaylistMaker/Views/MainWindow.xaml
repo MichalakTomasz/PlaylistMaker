@@ -1,0 +1,31 @@
+﻿<RibbonWindow x:Class="PlaylistMaker.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="Playlist Maker" Height="500" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".3*" MinWidth="120"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Ribbon Grid.Row="0" Grid.ColumnSpan="2">
+            <RibbonTab Header="Home">
+                <RibbonButton Label="Play"/>
+                <RibbonButton Label="Pause"/>
+                <RibbonButton Label="Stop"/>
+                <RibbonButton Label="Prev"/>
+                <RibbonButton Label="Next"/>
+                <RibbonButton Label="Save"/>
+            </RibbonTab>
+        </Ribbon>
+        <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" prism:RegionManager.RegionName="explorer" />
+        <ContentControl Grid.Row="1" Grid.Column="1" prism:RegionManager.RegionName="folders"/>
+        <ContentControl Grid.Row="2" Grid.Column="1" prism:RegionManager.RegionName="playlist"/>
+    </Grid>
+</RibbonWindow>
