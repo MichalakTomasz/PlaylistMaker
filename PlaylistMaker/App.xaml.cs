@@ -7,8 +7,8 @@ using PlaylistMaker.Files;
 using PlaylistMaker.Models;
 using PlaylistMaker.Playlist;
 using PlaylistMaker.Services;
+using PlaylistMaker.StatusBar;
 using PlaylistMaker.Views;
-using PlaylistMaker.Wrappers;
 using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;
@@ -36,6 +36,7 @@ namespace PlaylistMaker
             moduleCatalog.AddModule<ExplorerModule>();
             moduleCatalog.AddModule<FilesModule>();
             moduleCatalog.AddModule<PlaylistModule>();
+            moduleCatalog.AddModule<StatusBarModule>();
         }
 
         IMapper CreateMapper()

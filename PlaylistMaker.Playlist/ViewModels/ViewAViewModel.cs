@@ -16,7 +16,9 @@ namespace PlaylistMaker.Playlist.ViewModels
                 var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
                 Files.Clear();
                 Files.AddRange(wrappers);
-            });
+                eventAggregator.GetEvent<StatusBarEvent>()
+                .Publish(new Models.StatusBarInfo { ItemsCount = Files.Count });
+            }, ThreadOption.UIThread, true);
         }
 
         private ObservableCollection<FileAudioWrapper> _files = new ObservableCollection<FileAudioWrapper>();
