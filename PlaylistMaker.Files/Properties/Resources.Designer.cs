@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PlaylistMaker.Folders.Properties
+namespace PlaylistMaker.Files.Properties
 {
     using System;
 

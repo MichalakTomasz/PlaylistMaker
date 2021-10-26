@@ -1,12 +1,12 @@
 ﻿using PlaylistMaker.Commons;
-using PlaylistMaker.Folders.Views;
+using PlaylistMaker.Files.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace PlaylistMaker.Folders
+namespace PlaylistMaker.Files
 {
-    public class FoldersModule : IModule
+    public class FilesModule : IModule
     {
         public void OnInitialized(IContainerProvider containerProvider)
         {

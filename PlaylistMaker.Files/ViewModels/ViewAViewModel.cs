@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Unity;
 
-namespace PlaylistMaker.Folders.ViewModels
+namespace PlaylistMaker.Files.ViewModels
 {
     public class ViewAViewModel : BindableBase
     {

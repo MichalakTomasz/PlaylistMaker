@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Explorer", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Commons", "PlaylistMaker.Commons\PlaylistMaker.Commons.csproj", "{0D16D173-3B70-473D-9337-C1394D68F1F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Folders", "PlaylistMaker.Folders\PlaylistMaker.Folders.csproj", "{44C57BF4-634F-4DC5-988C-76F7CED137B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Files", "PlaylistMaker.Files\PlaylistMaker.Files.csproj", "{44C57BF4-634F-4DC5-988C-76F7CED137B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistMaker.Playlist", "PlaylistMaker.Playlist\PlaylistMaker.Playlist.csproj", "{3F4B6387-42C0-4262-8E2F-FA221F778B0A}"
 EndProject

@@ -123,9 +123,9 @@
       <Project>{C4744B86-FAC9-4131-AA89-8AD2CF674858}</Project>
       <Name>PlaylistMaker.Explorer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlaylistMaker.Folders\PlaylistMaker.Folders.csproj">
-      <Project>{44C57BF4-634F-4DC5-988C-76F7CED137B0}</Project>
-      <Name>PlaylistMaker.Folders</Name>
+    <ProjectReference Include="..\PlaylistMaker.Files\PlaylistMaker.Files.csproj">
+      <Project>{44c57bf4-634f-4dc5-988c-76f7ced137b0}</Project>
+      <Name>PlaylistMaker.Files</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlaylistMaker.Models\PlaylistMaker.Models.csproj">
       <Project>{98A69A38-A8CC-4D5A-8786-496EDD45BA49}</Project>

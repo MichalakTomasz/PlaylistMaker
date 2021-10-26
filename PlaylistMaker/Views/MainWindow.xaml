@@ -25,7 +25,7 @@
             </RibbonTab>
         </Ribbon>
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" prism:RegionManager.RegionName="explorer" />
-        <ContentControl Grid.Row="1" Grid.Column="1" prism:RegionManager.RegionName="folders"/>
+        <ContentControl Grid.Row="1" Grid.Column="1" prism:RegionManager.RegionName="files"/>
         <ContentControl Grid.Row="2" Grid.Column="1" prism:RegionManager.RegionName="playlist"/>
     </Grid>
 </RibbonWindow>

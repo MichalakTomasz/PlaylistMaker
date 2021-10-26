@@ -3,7 +3,7 @@ using IdSharp.Tagging.ID3v1;
 using IdSharp.Tagging.ID3v2;
 using PlaylistMaker.Commons;
 using PlaylistMaker.Explorer;
-using PlaylistMaker.Folders;
+using PlaylistMaker.Files;
 using PlaylistMaker.Models;
 using PlaylistMaker.Playlist;
 using PlaylistMaker.Services;
@@ -34,7 +34,7 @@ namespace PlaylistMaker
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule<ExplorerModule>();
-            moduleCatalog.AddModule<FoldersModule>();
+            moduleCatalog.AddModule<FilesModule>();
             moduleCatalog.AddModule<PlaylistModule>();
         }
 
