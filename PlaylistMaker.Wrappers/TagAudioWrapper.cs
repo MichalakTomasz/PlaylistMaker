@@ -24,7 +24,7 @@ namespace PlaylistMaker.Wrappers
             set => SetValue(value);
         }
 
-        public string Artyst
+        public string Artist
         {
             get => GetValue<string>();
             set => SetValue(value);

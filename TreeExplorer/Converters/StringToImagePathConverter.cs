@@ -32,10 +32,18 @@ namespace ExplorerTreeView
             }
         }
 
-        private BitmapImage GetImageFromName(string name)
+        private BitmapSource GetImageFromName(string name)
         {
-            return name.Substring(0, 1) != "." ? new BitmapImage(new Uri($"Images/{name}.ico", UriKind.Relative))
-                : new BitmapImage(new Uri($"Images/File.ico", UriKind.Relative));
+            //var resource = Application.Current.TryFindResource(name);
+            //if (resource != default)
+            //{
+            //    var bit = (BitmapSource)resource;
+            //    return bit;
+            //}
+            //return default;
+            var img = name.Substring(0, 1) != "." ? new BitmapImage(new Uri($"/PlaylistMaker/TreeExplorer/Images;ContentFile/Images/{name}.ico", UriKind.Relative))
+                : new BitmapImage(new Uri($"/PlaylistMaker/TreeExplorer/Images;ContentFile/File.ico", UriKind.Relative));
+            return img;
         }
 
         private BitmapSource GetImageFromPath(string path)

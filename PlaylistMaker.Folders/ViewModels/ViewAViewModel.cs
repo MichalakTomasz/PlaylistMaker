@@ -22,6 +22,7 @@ namespace PlaylistMaker.Folders.ViewModels
             {
                 var fileAudioWrappers =  e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service)).ToList();
                 FileAudioWrappers = new ObservableCollection<FileAudioWrapper>(fileAudioWrappers);
+                SelectedTab = fileAudioWrappers.Any(f => f.ID3v2Tag.HasTag) ? 1 : 0;
             }, ThreadOption.UIThread, true);
         }
 
@@ -45,6 +46,14 @@ namespace PlaylistMaker.Folders.ViewModels
             get { return _fileAudioWrappers; }
             set { SetProperty(ref _fileAudioWrappers, value); }
         }
+        
+        private int _selectedTab;
+        public int SelectedTab
+        {
+            get { return _selectedTab; }
+            set { SetProperty(ref _selectedTab, value); }
+        }
+
 
     }
 }

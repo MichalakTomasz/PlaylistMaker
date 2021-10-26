@@ -266,7 +266,7 @@ namespace ExplorerTreeView
         public void ExecuteSelectedNodeEvents()
         {
             Refresh();
-            ExecuteNodeLeftButtonMouceClick();
+            ExecuteNodeLeftButtonMouseClick();
             ExecuteCommand();
         }
 
@@ -371,17 +371,14 @@ namespace ExplorerTreeView
                 SelectedNode = CreateExplorerNode(node);
                 Refresh();
 
-                ExecuteNodeLeftButtonMouceClick();
+                ExecuteNodeLeftButtonMouseClick();
                 ExecuteCommand();
             } 
         }
 
-        private void ExecuteNodeLeftButtonMouceClick()
-        {
-            if (NodeLeftButtonMouseClick != null)
-                NodeLeftButtonMouseClick?.Invoke(this, new NodeMouseClickEventArgs(SelectedNode));
-        }
-
+        private void ExecuteNodeLeftButtonMouseClick()
+            => NodeLeftButtonMouseClick?.Invoke(this, new NodeMouseClickEventArgs(SelectedNode));
+        
         private void ExecuteCommand()
         {
             if (Command != null)

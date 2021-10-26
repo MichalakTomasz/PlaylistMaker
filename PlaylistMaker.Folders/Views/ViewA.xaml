@@ -10,18 +10,38 @@
              prism:ViewModelLocator.AutoWireViewModel="True" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition MinHeight="200"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DockPanel Grid.Row="1">
-            <Button Content="Add" Margin="10" DockPanel.Dock="Left"/>
-            <Button Content="Remove" Margin="10" DockPanel.Dock="Left"/>
-        </DockPanel>
+        <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTab}">
+            <TabItem Header="ID3v1">
+                <DataGrid ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
+                        <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
+                        <DataGridTextColumn Header="Artist" Binding="{Binding ID3v1Tag.Artist}"/>
+                        <DataGridTextColumn Header="Album" Binding="{Binding ID3v1Tag.Album}"/>
+                        <DataGridTextColumn Header="No" Binding="{Binding ID3v1Tag.TrackNumber}"/>
+                        <DataGridTextColumn Header="Genre" Binding="{Binding ID3v1Tag.Genre}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="ID3v2">
+                <DataGrid ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
+                        <DataGridTextColumn Header="Title" Binding="{Binding ID3v2Tag.Title}"/>
+                        <DataGridTextColumn Header="Artist" Binding="{Binding ID3v2Tag.Artist}"/>
+                        <DataGridTextColumn Header="Album" Binding="{Binding ID3v2Tag.Album}"/>
+                        <DataGridTextColumn Header="No" Binding="{Binding ID3v2Tag.TrackNumber}"/>
+                        <DataGridTextColumn Header="Genre" Binding="{Binding ID3v2Tag.Genre}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Add"  DockPanel.Dock="Left"/>
+            <Button Content="Remove" DockPanel.Dock="Left"/>
+        </StackPanel>
     </Grid>
 </UserControl>

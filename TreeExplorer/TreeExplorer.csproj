@@ -87,7 +87,12 @@
     <Compile Include="Services\IO\PathService.cs" />
     <Compile Include="Services\IO\UserNameService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PlaylistMaker.Commons\PlaylistMaker.Commons.csproj">
+      <Project>{0D16D173-3B70-473D-9337-C1394D68F1F9}</Project>
+      <Name>PlaylistMaker.Commons</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Images\CdRom.ico" />
     <Content Include="Images\cdrom1.ico" />

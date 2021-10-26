@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="Root" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/Hdd.ico"/>
+    <BitmapImage x:Key="Folder" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/Folder.ico"/>
+    <BitmapImage x:Key="Hdd" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/Hdd.ico"/>
+    <BitmapImage x:Key="CdRom" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/CdRom.ico"/>
+    <BitmapImage x:Key="SoftDisc" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/SoftDisc.ico"/>
+    <BitmapImage x:Key="Network" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/Network.ico"/>
+    <BitmapImage x:Key="File" UriSource="/PlaylistMaker/TreeExplorer/Images;ContentFile/File.ico"/>
+</ResourceDictionary>
