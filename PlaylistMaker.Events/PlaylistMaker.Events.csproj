@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ExplorerEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlaylistMaker.Models\PlaylistMaker.Models.csproj">

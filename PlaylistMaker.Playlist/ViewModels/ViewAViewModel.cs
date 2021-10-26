@@ -1,25 +1,29 @@
-﻿using Prism.Commands;
+﻿using PlaylistMaker.Events;
+using PlaylistMaker.Wrappers;
+using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlaylistMaker.Playlist.ViewModels
 {
     public class ViewAViewModel : BindableBase
     {
-        private string _message;
-        public string Message
+        public ViewAViewModel(IEventAggregator eventAggregator)
         {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
+            eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
+            {
+                var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
+                Files.Clear();
+                Files.AddRange(wrappers);
+            });
         }
 
-        public ViewAViewModel()
+        private ObservableCollection<FileAudioWrapper> _files = new ObservableCollection<FileAudioWrapper>();
+        public ObservableCollection<FileAudioWrapper> Files
         {
-            Message = "View A from your Prism Module";
+            get { return _files; }
+            set { SetProperty(ref _files, value); }
         }
     }
 }

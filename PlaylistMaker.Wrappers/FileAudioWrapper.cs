@@ -9,7 +9,9 @@ namespace PlaylistMaker.Wrappers
     public class FileAudioWrapper : WrapperBase<FileAudio> 
     {
 
-        public FileAudioWrapper(string fullPath, [Dependency(Literals.id3v1)] IID3Service id3V1Service, [Dependency(Literals.id3v2)]IID3Service Id3V2Service)
+        public FileAudioWrapper(string fullPath, 
+            [Dependency(Literals.id3v1)] IID3Service id3V1Service, 
+            [Dependency(Literals.id3v2)] IID3Service Id3V2Service)
         {
             Model = new FileAudio
             {
@@ -21,6 +23,9 @@ namespace PlaylistMaker.Wrappers
             ID3v1Tag = new TagId3v1Wrapper(Model.ID3v1Tag);
             ID3v2Tag = new TagId3v2Wrapper(Model.ID3v2Tag);
         }
+
+        public FileAudioWrapper(FileAudio fileAudio)
+            => Model = fileAudio;
 
         public string FullPath
         {
@@ -35,7 +40,17 @@ namespace PlaylistMaker.Wrappers
         }
 
         public TagId3v1Wrapper ID3v1Tag { get; set; }
-
         public TagId3v2Wrapper ID3v2Tag { get; set; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                NotyfyPropertyChanged();
+            }
+        }
     }
 }

@@ -7,16 +7,30 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True" >
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Name="filesControl">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="200"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" MinHeight="40"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTab}">
             <TabItem Header="ID3v1">
-                <DataGrid ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
+                <DataGrid ItemsSource="{Binding FileAudioWrappers}" 
+                          AutoGenerateColumns="False" RowBackground="Azure" 
+                          AlternatingRowBackground="LightGray">
                     <DataGrid.Columns>
+                        <DataGridCheckBoxColumn 
+                            Binding="{Binding IsSelected}">
+                            <DataGridCheckBoxColumn.Header>
+                                <CheckBox
+                                    DataContext="{Binding DataContext, ElementName=filesControl}"
+                                    IsChecked="{Binding SelectAll}"
+                                    Command="{Binding SelectAllCommand}"
+                                    IsThreeState="False"
+                                    IsEnabled="{Binding IsSelectAllEnabled}"/>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
                         <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
                         <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
                         <DataGridTextColumn Header="Artist" Binding="{Binding ID3v1Tag.Artist}"/>
@@ -29,6 +43,7 @@
             <TabItem Header="ID3v2">
                 <DataGrid ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
                     <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
                         <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
                         <DataGridTextColumn Header="Title" Binding="{Binding ID3v2Tag.Title}"/>
                         <DataGridTextColumn Header="Artist" Binding="{Binding ID3v2Tag.Artist}"/>
@@ -40,7 +55,7 @@
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Add"  DockPanel.Dock="Left"/>
+            <Button Content="Add"  DockPanel.Dock="Left" Command="{Binding AddFilesCommand}"/>
             <Button Content="Remove" DockPanel.Dock="Left"/>
         </StackPanel>
     </Grid>

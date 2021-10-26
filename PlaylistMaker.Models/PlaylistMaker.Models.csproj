@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="FileAudio.cs" />
     <Compile Include="IFileAudio.cs" />
+    <Compile Include="SelectedFilesInfo.cs" />
     <Compile Include="TagAudio.cs" />
     <Compile Include="ExplorerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

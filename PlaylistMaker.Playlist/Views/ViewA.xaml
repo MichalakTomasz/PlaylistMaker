@@ -9,6 +9,14 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True" >
     <Grid>
-        <DataGrid/>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="100"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding Files}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
