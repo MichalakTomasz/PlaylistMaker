@@ -90,6 +90,10 @@
       <Project>{98A69A38-A8CC-4D5A-8786-496EDD45BA49}</Project>
       <Name>PlaylistMaker.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlaylistMaker.Services\PlaylistMaker.Services.csproj">
+      <Project>{D1984D9F-F397-4FED-A38B-7F6004E75B85}</Project>
+      <Name>PlaylistMaker.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlaylistMaker.Wrappers\PlaylistMaker.Wrappers.csproj">
       <Project>{09E5D4EC-37C3-4B3F-922C-B28C3D403D22}</Project>
       <Name>PlaylistMaker.Wrappers</Name>

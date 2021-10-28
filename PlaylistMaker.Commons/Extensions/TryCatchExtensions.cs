@@ -20,6 +20,18 @@ namespace PlaylistMaker.Commons
                 return Result.Error(!string.IsNullOrEmpty(message) ? message : e.Message);
             }
         }
+
+        public static IResult<T> TryCatch<T>(Func<T> func, string message = "")
+        {
+            try
+            {
+                return Result.Ok(func());
+            }
+            catch (Exception e)
+            {
+                return Result.Error<T>(!string.IsNullOrEmpty(message) ? message : e.Message);
+            }
+        }
         public static IResult TryCatch<T>(this T value, Action<T> action, string message = "")
         {
             try

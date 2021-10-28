@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="FileAudio.cs" />
     <Compile Include="IFileAudio.cs" />
+    <Compile Include="MainWindowInfo.cs" />
+    <Compile Include="MessageType.cs" />
     <Compile Include="SelectedFilesInfo.cs" />
     <Compile Include="StatusBarInfo.cs" />
     <Compile Include="TagAudio.cs" />
@@ -56,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlaylistMaker.Commons\PlaylistMaker.Commons.csproj">
+      <Project>{0D16D173-3B70-473D-9337-C1394D68F1F9}</Project>
+      <Name>PlaylistMaker.Commons</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

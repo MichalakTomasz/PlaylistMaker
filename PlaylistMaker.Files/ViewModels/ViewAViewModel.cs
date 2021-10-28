@@ -15,18 +15,45 @@ namespace PlaylistMaker.Files.ViewModels
 {
     public class ViewAViewModel : BindableBase
     {
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IPlayMediaService _playMediaService;
+
         public ViewAViewModel(
             IEventAggregator eventAggregator, 
             [Dependency(Literals.id3v1)]IID3Service iD3v1Service, 
-            [Dependency(Literals.id3v2)]IID3Service iD3v2Service)
+            [Dependency(Literals.id3v2)]IID3Service iD3v2Service,
+            IPlayMediaService playMediaService)
         {
             _eventAggregator = eventAggregator;
+            _playMediaService = playMediaService;
+
             eventAggregator.GetEvent<ExplorerEvent>().Subscribe(e =>
             {
-                var fileAudioWrappers =  e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service)).ToList();
+                var fileAudioWrappers =  e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service, playMediaService)).ToList();
                 FileAudioWrappers = new ObservableCollection<FileAudioWrapper>(fileAudioWrappers);
                 IsSelectAllEnabled = fileAudioWrappers.Any();
                 SelectedTab = fileAudioWrappers.Any(f => f.ID3v2Tag.HasTag) ? 1 : 0;
+            }, ThreadOption.UIThread, true);
+
+            eventAggregator.GetEvent<MainWindowEvent>().Subscribe(e =>
+            {
+                var selected = FileAudioWrappers.FirstOrDefault(f => f.IsSelected);
+                if (selected != default)
+                {
+                    switch (e.MessageType)
+                    { 
+                        case MessageType.Play:
+                        _playMediaService.Open(selected.FullPath);
+                        _playMediaService.Play();
+                        break;
+                        case MessageType.Stop:
+                            _playMediaService.Stop();
+                            break;
+                        case MessageType.Pause:
+                            _playMediaService.Stop();
+                            break;
+                    }
+                }
             }, ThreadOption.UIThread, true);
         }
 
@@ -78,8 +105,6 @@ namespace PlaylistMaker.Files.ViewModels
         }
 
         private DelegateCommand _addFilesCommand;
-        private readonly IEventAggregator _eventAggregator;
-
         public DelegateCommand AddFilesCommand =>
             _addFilesCommand ?? (_addFilesCommand = new DelegateCommand(ExecuteAddFilesCommand, CanExecuteAddFilesCommand))
             .ObservesProperty(() => FileAudioWrappers);

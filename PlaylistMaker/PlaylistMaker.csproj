@@ -119,6 +119,10 @@
       <Project>{0d16d173-3b70-473d-9337-c1394d68f1f9}</Project>
       <Name>PlaylistMaker.Commons</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlaylistMaker.Events\PlaylistMaker.Events.csproj">
+      <Project>{1FE49E85-B097-41FF-B3C4-AB7F1594AE52}</Project>
+      <Name>PlaylistMaker.Events</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlaylistMaker.ExplorerModule\PlaylistMaker.Explorer.csproj">
       <Project>{C4744B86-FAC9-4131-AA89-8AD2CF674858}</Project>
       <Name>PlaylistMaker.Explorer</Name>

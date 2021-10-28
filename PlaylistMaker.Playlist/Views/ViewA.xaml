@@ -12,10 +12,16 @@
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="100"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding Files}">
+        <DataGrid 
+            ItemsSource="{Binding Files}"
+            AutoGenerateColumns="False">
             <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
                 <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
                 <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
+                <DataGridTextColumn Header="Artist" Binding="{Binding ID3v1Tag.Artist}"/>
+                <DataGridTextColumn Header="Album" Binding="{Binding ID3v1Tag.Album}"/>
+                <DataGridTextColumn Header="No." Binding="{Binding ID3v1Tag.TrackNumber}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

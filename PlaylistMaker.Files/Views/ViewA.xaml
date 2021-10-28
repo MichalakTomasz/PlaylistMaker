@@ -41,7 +41,10 @@
                 </DataGrid>
             </TabItem>
             <TabItem Header="ID3v2">
-                <DataGrid ItemsSource="{Binding FileAudioWrappers}" AutoGenerateColumns="False" RowBackground="Azure" AlternatingRowBackground="LightGray">
+                <DataGrid ItemsSource="{Binding FileAudioWrappers}" 
+                          AutoGenerateColumns="False" 
+                          RowBackground="Azure" 
+                          AlternatingRowBackground="LightGray">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
                         <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
@@ -57,6 +60,18 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Content="Add"  DockPanel.Dock="Left" Command="{Binding AddFilesCommand}"/>
             <Button Content="Remove" DockPanel.Dock="Left"/>
+            <Button Content="Play"/>
+            <Button Content="Stop"/>
+            <Button Content="Pause"/>
+                <Slider Value="{Binding Position}" Width="300"/>
+            <StackPanel>
+                <Slider Value="{Binding Volume}" Width="150"/>
+                <TextBlock Text="Volume" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel>
+                <Slider Value="{Binding Balance}" Width="150"/>
+                <TextBlock Text="Balance"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

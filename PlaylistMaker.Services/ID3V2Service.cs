@@ -2,6 +2,7 @@
 using IdSharp.Tagging.ID3v2;
 using PlaylistMaker.Commons;
 using PlaylistMaker.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace PlaylistMaker.Services
             }
         }
 
-        public TagVersion GetTagVersion(string filepath)
+        public TagVersion GetTagVersion(string filePath)
             => TagVersion.unknown;
 
         public IReadOnlyList<string> GetGenres()
@@ -62,28 +63,29 @@ namespace PlaylistMaker.Services
 
         #region IID3V2ImageService
 
-        public bool HasImages(string filepath)
-        {
-            if (!ID3v2Tag.DoesTagExist(filepath))
-                return false;
+        public IResult<bool> HasImages(string filepath)
+            => TryCatchExtensions.TryCatch(() =>
+            {
+                if (!ID3v2Tag.DoesTagExist(filepath))
+                    return false;
 
-            var tag = new ID3v2Tag(filepath);
-            return tag.PictureList?.Count > 0;
-        }
+                var tag = new ID3v2Tag(filepath);
+                return tag.PictureList?.Count > 0;
+            });
 
-        public IEnumerable<BitmapImage> GetImages(string filepath)
-        {
-            if (!ID3v2Tag.DoesTagExist(filepath))
-                yield return default;
+        public IResult<IEnumerable<BitmapImage>> GetImages(string filePath)
+            => TryCatchExtensions.TryCatch(() =>
+            {
+                if (!ID3v2Tag.DoesTagExist(filePath))
+                    return default;
 
-            var tag = new ID3v2Tag(filepath);
-            if (tag.PictureList?.Count == 0)
-                yield return default;
+                var tag = new ID3v2Tag(filePath);
+                if (tag.PictureList?.Count == 0)
+                    return default;
 
-            var imageBuffers = tag.PictureList.Select(p => p.PictureData);
-            foreach (var item in imageBuffers)
-                yield return ConvertToBitmapImage(item);
-        }
+                return tag.PictureList.Select(p => ConvertToBitmapImage(p.PictureData))
+                .ToList().AsEnumerable();
+            }, "Loading images filed");
 
         private BitmapImage ConvertToBitmapImage(byte[] buffer)
         {
@@ -98,6 +100,7 @@ namespace PlaylistMaker.Services
             }
         }
 
-        #endregion // IID3V2ImageService
+        #endregion IID3V2ImageService
+
     }
 }

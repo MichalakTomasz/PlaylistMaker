@@ -66,7 +66,9 @@
     <Compile Include="IID3Service.cs" />
     <Compile Include="IID3V2ImageService.cs" />
     <Compile Include="ILogService.cs" />
+    <Compile Include="IPlayMediaService.cs" />
     <Compile Include="LogService.cs" />
+    <Compile Include="PlayMediaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
