@@ -1,18 +1,20 @@
 ﻿using PlaylistMaker.Commons;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PlaylistMaker.Services
 {
     public interface IPlayMediaService
     {
-        IResult Balance(double value);
         IResult Open(string fullPath);
         IResult Pause();
         IResult Play();
         IResult Stop();
-        IResult Volume(int value);
+        double Balance { get; set; }
+        double Volume { get; set; }
         bool IsMuted { get; }
         TimeSpan Position { get; set; }
+        bool IsOpened { get; }
     }
 }

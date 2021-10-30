@@ -29,7 +29,7 @@ namespace PlaylistMaker
             containerRegistry.Register<IID3Service, ID3V2Service>(Literals.id3v2);
             var imapper = CreateMapper();
             containerRegistry.RegisterInstance(imapper);
-            containerRegistry.Register<IPlayMediaService, PlayMediaService>();
+            containerRegistry.RegisterSingleton<IPlayMediaService, PlayMediaService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

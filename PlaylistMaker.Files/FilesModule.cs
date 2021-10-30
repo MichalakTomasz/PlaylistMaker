@@ -11,7 +11,7 @@ namespace PlaylistMaker.Files
         public void OnInitialized(IContainerProvider containerProvider)
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion(Literals.folders, typeof(ViewA));
+            regionManager.RegisterViewWithRegion(Literals.folders, typeof(ViewFiles));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

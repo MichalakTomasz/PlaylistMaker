@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -449,5 +450,15 @@ namespace ExplorerTreeView
         private DispatcherTimer _dispatcherTimer;
 
         #endregion//Fields
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var scroll = sender as ScrollViewer;
+            if (scroll != default)
+            {
+                var value = e.Delta > 0 ? scroll.VerticalOffset -5 : scroll.VerticalOffset + 5;
+                scroll.ScrollToVerticalOffset(value);
+            }
+        }
     }
 }

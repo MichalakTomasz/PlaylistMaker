@@ -1,14 +1,21 @@
-﻿<UserControl x:Class="PlaylistMaker.Files.Views.ViewA"
+﻿<UserControl x:Class="PlaylistMaker.Files.Views.ViewFiles"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PlaylistMaker.Files.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:c="clr-namespace:PlaylistMaker.Commons.Converters;assembly=PlaylistMaker.Commons"
+             xmlns:b="clr-namespace:PlaylistMaker.Commons.Behaviors;assembly=PlaylistMaker.Commons"
+             xmlns:be="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Name="filesControl">
+    <UserControl.Resources>
+        <c:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter"/>
+        <c:TimeSpanToFormatedMinutesString x:Key="TimeSpanToFormatedMinutesString"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="200"/>
@@ -38,6 +45,9 @@
                         <DataGridTextColumn Header="No" Binding="{Binding ID3v1Tag.TrackNumber}"/>
                         <DataGridTextColumn Header="Genre" Binding="{Binding ID3v1Tag.Genre}"/>
                     </DataGrid.Columns>
+                    <be:Interaction.Behaviors>
+                        <b:SelectedItemsBehavior SelectedItems="{Binding SelectedItems, Mode=OneWayToSource}"/>
+                    </be:Interaction.Behaviors>
                 </DataGrid>
             </TabItem>
             <TabItem Header="ID3v2">
@@ -46,7 +56,17 @@
                           RowBackground="Azure" 
                           AlternatingRowBackground="LightGray">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
+                        <DataGridCheckBoxColumn 
+                            Binding="{Binding IsSelected}">
+                            <DataGridCheckBoxColumn.Header>
+                                <CheckBox
+                                    DataContext="{Binding DataContext, ElementName=filesControl}"
+                                    IsChecked="{Binding SelectAll}"
+                                    Command="{Binding SelectAllCommand}"
+                                    IsThreeState="False"
+                                    IsEnabled="{Binding IsSelectAllEnabled}"/>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
                         <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
                         <DataGridTextColumn Header="Title" Binding="{Binding ID3v2Tag.Title}"/>
                         <DataGridTextColumn Header="Artist" Binding="{Binding ID3v2Tag.Artist}"/>
@@ -54,23 +74,39 @@
                         <DataGridTextColumn Header="No" Binding="{Binding ID3v2Tag.TrackNumber}"/>
                         <DataGridTextColumn Header="Genre" Binding="{Binding ID3v2Tag.Genre}"/>
                     </DataGrid.Columns>
+                    <be:Interaction.Behaviors>
+                        <b:SelectedItemsBehavior SelectedItems="{Binding SelectedItems, Mode=OneWayToSource}"/>
+                    </be:Interaction.Behaviors>
                 </DataGrid>
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Content="Add"  DockPanel.Dock="Left" Command="{Binding AddFilesCommand}"/>
             <Button Content="Remove" DockPanel.Dock="Left"/>
-            <Button Content="Play"/>
-            <Button Content="Stop"/>
-            <Button Content="Pause"/>
-                <Slider Value="{Binding Position}" Width="300"/>
+            <Button Content="Play" Command="{Binding PlayCommand}"/>
+            <Button Content="Stop" Command="{Binding StopCommand}"/>
+            <Button Content="Pause" Command="{Binding PauseCommand}"/>
+            <TextBlock Text="{Binding Position, 
+                Converter={StaticResource TimeSpanToFormatedMinutesString}}"
+                       Margin="5"/>
+            <Slider Value="{Binding Position, Converter={StaticResource TimeSpanToDoubleConverter}}" Width="300"/>
             <StackPanel>
-                <Slider Value="{Binding Volume}" Width="150"/>
+                <Slider Value="{Binding Volume, Mode=TwoWay}" Width="150">
+                    <be:Interaction.Behaviors>
+                        <b:SliderValueChangedBehavior Command="{Binding VolumeCommand}"/>
+                    </be:Interaction.Behaviors>
+                </Slider>
                 <TextBlock Text="Volume" HorizontalAlignment="Center"/>
             </StackPanel>
             <StackPanel>
-                <Slider Value="{Binding Balance}" Width="150"/>
-                <TextBlock Text="Balance"/>
+                <Slider Value="{Binding Balance}"  
+                        IsSnapToTickEnabled="False"
+                        AutoToolTipPrecision="1"
+                        Minimum="-4"
+                        Maximum="4"
+                        Width="150"
+                        TickPlacement="BottomRight"/>
+                <TextBlock Text="Balance" HorizontalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
     </Grid>
