@@ -42,8 +42,7 @@ namespace PlaylistMaker.Files.ViewModels
             eventAggregator.GetEvent<ExplorerEvent>().Subscribe(e =>
             {
                 var fileAudioWrappers = e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service, playMediaService)).ToList();
-                FileAudioWrappers = new ObservableCollection<FileAudioWrapper>(fileAudioWrappers);
-                IsSelectAllEnabled = fileAudioWrappers.Any();
+                FileAudioWrappers = fileAudioWrappers;
                 SelectedTab = fileAudioWrappers.Any(f => f.ID3v2Tag.HasTag) ? 1 : 0;
             }, ThreadOption.UIThread, true);
 
@@ -76,8 +75,8 @@ namespace PlaylistMaker.Files.ViewModels
             Position = TimeSpan.FromSeconds(0);
         }
 
-        private ObservableCollection<FileAudioWrapper> _fileAudioWrappers;
-        public ObservableCollection<FileAudioWrapper> FileAudioWrappers
+        private IEnumerable<FileAudioWrapper> _fileAudioWrappers = new List<FileAudioWrapper>();
+        public IEnumerable<FileAudioWrapper> FileAudioWrappers
         {
             get { return _fileAudioWrappers; }
             set { SetProperty(ref _fileAudioWrappers, value); }
@@ -104,13 +103,6 @@ namespace PlaylistMaker.Files.ViewModels
             set { SetProperty(ref _selectAll, value); }
         }
 
-        private bool _isSelectAllEnabled;
-        public bool IsSelectAllEnabled
-        {
-            get { return _isSelectAllEnabled; }
-            set { SetProperty(ref _isSelectAllEnabled, value); }
-        }
-
         private TimeSpan _position;
         public TimeSpan Position
         {
@@ -125,11 +117,14 @@ namespace PlaylistMaker.Files.ViewModels
             set { SetProperty(ref _volume, value); }
         }
 
-        private double _balance;
         public double Balance
         {
-            get { return _balance; }
-            set { SetProperty(ref _balance, value); }
+            set
+            {
+                _playMediaService.Balance = value;
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(Balance)));
+            }
+            get => _playMediaService.Balance;
         }
 
         private IList _selectedItems;
@@ -142,7 +137,8 @@ namespace PlaylistMaker.Files.ViewModels
         private DelegateCommand _selectAllCommand;
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
-            new DelegateCommand(ExecuteSelectAllCommand));
+            new DelegateCommand(ExecuteSelectAllCommand, () => FileAudioWrappers.Any())
+            .ObservesProperty(() => FileAudioWrappers));
 
         void ExecuteSelectAllCommand()
         {
@@ -161,6 +157,7 @@ namespace PlaylistMaker.Files.ViewModels
         {
             SelectedFiles = FileAudioWrappers.Where(f => f.IsSelected).Select(f => f.Model).ToList();
             _eventAggregator.GetEvent<SelectionEvent>().Publish(SelectedFiles);
+            FileAudioWrappers.ToList().ForEach(f => f.IsSelected = false);
         }
 
         bool CanExecuteAddFilesCommand()
@@ -172,8 +169,7 @@ namespace PlaylistMaker.Files.ViewModels
 
         void ExecutePlayCommand()
         {
-            var se = SelectedItems.Cast<FileAudioWrapper>().ToList();
-            var selected = FileAudioWrappers.FirstOrDefault(f => f.IsSelected);
+            var selected = SelectedItems.Cast<FileAudioWrapper>().First();
             if (selected != default)
             {
                 _playMediaService.Open(selected.FullPath);

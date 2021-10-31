@@ -11,7 +11,7 @@ namespace PlaylistMaker.StatusBar
         public void OnInitialized(IContainerProvider containerProvider)
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion(Literals.statusBar, typeof(ViewA));
+            regionManager.RegisterViewWithRegion(Literals.statusBar, typeof(ViewStatusBar));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

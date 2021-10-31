@@ -24,25 +24,33 @@
         <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTab}">
             <TabItem Header="ID3v1">
                 <DataGrid ItemsSource="{Binding FileAudioWrappers}" 
+                          SelectionMode="Single"
                           AutoGenerateColumns="False" RowBackground="Azure" 
                           AlternatingRowBackground="LightGray">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn 
-                            Binding="{Binding IsSelected}">
-                            <DataGridCheckBoxColumn.Header>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.Header>
                                 <CheckBox
                                     DataContext="{Binding DataContext, ElementName=filesControl}"
                                     IsChecked="{Binding SelectAll}"
-                                    Command="{Binding SelectAllCommand}"
-                                    IsThreeState="False"
-                                    IsEnabled="{Binding IsSelectAllEnabled}"/>
-                            </DataGridCheckBoxColumn.Header>
-                        </DataGridCheckBoxColumn>
+                                    Command="{Binding SelectAllCommand, Mode=OneTime}"
+                                    IsThreeState="False">
+                                </CheckBox>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox 
+                                        IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                        HorizontalAlignment="Center"
+                                        IsThreeState="False"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
                         <DataGridTextColumn Header="Title" Binding="{Binding ID3v1Tag.Title}"/>
                         <DataGridTextColumn Header="Artist" Binding="{Binding ID3v1Tag.Artist}"/>
                         <DataGridTextColumn Header="Album" Binding="{Binding ID3v1Tag.Album}"/>
-                        <DataGridTextColumn Header="No" Binding="{Binding ID3v1Tag.TrackNumber}"/>
+                        <DataGridTextColumn Header="No." Binding="{Binding ID3v1Tag.TrackNumber}"/>
                         <DataGridTextColumn Header="Genre" Binding="{Binding ID3v1Tag.Genre}"/>
                     </DataGrid.Columns>
                     <be:Interaction.Behaviors>
@@ -52,26 +60,33 @@
             </TabItem>
             <TabItem Header="ID3v2">
                 <DataGrid ItemsSource="{Binding FileAudioWrappers}" 
+                          SelectionMode="Single"
                           AutoGenerateColumns="False" 
                           RowBackground="Azure" 
                           AlternatingRowBackground="LightGray">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn 
-                            Binding="{Binding IsSelected}">
-                            <DataGridCheckBoxColumn.Header>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.Header>
                                 <CheckBox
-                                    DataContext="{Binding DataContext, ElementName=filesControl}"
+                                    DataContext="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType=DataGrid}, Path=DataContext}"
                                     IsChecked="{Binding SelectAll}"
-                                    Command="{Binding SelectAllCommand}"
-                                    IsThreeState="False"
-                                    IsEnabled="{Binding IsSelectAllEnabled}"/>
-                            </DataGridCheckBoxColumn.Header>
-                        </DataGridCheckBoxColumn>
+                                    Command="{Binding SelectAllCommand, Mode=OneWayToSource}"
+                                    IsThreeState="False">
+                                </CheckBox>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox 
+                                        IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                        HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
                         <DataGridTextColumn Header="Title" Binding="{Binding ID3v2Tag.Title}"/>
                         <DataGridTextColumn Header="Artist" Binding="{Binding ID3v2Tag.Artist}"/>
                         <DataGridTextColumn Header="Album" Binding="{Binding ID3v2Tag.Album}"/>
-                        <DataGridTextColumn Header="No" Binding="{Binding ID3v2Tag.TrackNumber}"/>
+                        <DataGridTextColumn Header="No." Binding="{Binding ID3v2Tag.TrackNumber}"/>
                         <DataGridTextColumn Header="Genre" Binding="{Binding ID3v2Tag.Genre}"/>
                     </DataGrid.Columns>
                     <be:Interaction.Behaviors>
@@ -91,7 +106,7 @@
                        Margin="5"/>
             <Slider Value="{Binding Position, Converter={StaticResource TimeSpanToDoubleConverter}}" Width="300"/>
             <StackPanel>
-                <Slider Value="{Binding Volume, Mode=TwoWay}" Width="150">
+                <Slider Value="{Binding Volume, Mode=TwoWay}" Maximum="10" Width="150">
                     <be:Interaction.Behaviors>
                         <b:SliderValueChangedBehavior Command="{Binding VolumeCommand}"/>
                     </be:Interaction.Behaviors>
@@ -100,11 +115,12 @@
             </StackPanel>
             <StackPanel>
                 <Slider Value="{Binding Balance}"  
-                        IsSnapToTickEnabled="False"
+                        IsSnapToTickEnabled="True"
                         AutoToolTipPrecision="1"
-                        Minimum="-4"
-                        Maximum="4"
+                        Minimum="-1"
+                        Maximum="1"
                         Width="150"
+                        TickFrequency=".1"
                         TickPlacement="BottomRight"/>
                 <TextBlock Text="Balance" HorizontalAlignment="Center"/>
             </StackPanel>

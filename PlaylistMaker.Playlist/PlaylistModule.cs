@@ -11,7 +11,7 @@ namespace PlaylistMaker.Playlist
         public void OnInitialized(IContainerProvider containerProvider)
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion(Literals.playlist, typeof(ViewA));
+            regionManager.RegisterViewWithRegion(Literals.playlist, typeof(ViewPlaylist));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

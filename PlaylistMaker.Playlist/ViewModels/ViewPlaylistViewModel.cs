@@ -1,16 +1,17 @@
 ﻿using PlaylistMaker.Events;
-using PlaylistMaker.Services;
 using PlaylistMaker.Wrappers;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PlaylistMaker.Playlist.ViewModels
 {
-    public class ViewAViewModel : BindableBase
+    public class ViewPlaylistViewModel : BindableBase
     {
-        public ViewAViewModel(IEventAggregator eventAggregator)
+        public ViewPlaylistViewModel(IEventAggregator eventAggregator)
         {
 
             eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
@@ -21,7 +22,6 @@ namespace PlaylistMaker.Playlist.ViewModels
                 eventAggregator.GetEvent<StatusBarEvent>()
                 .Publish(new Models.StatusBarInfo { ItemsCount = Files.Count });
             }, ThreadOption.UIThread, true);
-
         }
 
         private ObservableCollection<FileAudioWrapper> _files = new ObservableCollection<FileAudioWrapper>();
@@ -30,6 +30,28 @@ namespace PlaylistMaker.Playlist.ViewModels
         {
             get { return _files; }
             set { SetProperty(ref _files, value); }
+        }
+
+        private bool _selectAll;
+        public bool SelectAll
+        {
+            get { return _selectAll; }
+            set { SetProperty(ref _selectAll, value); }
+        }
+
+        private DelegateCommand _selectAllCommand;
+        public DelegateCommand SelectAllCommand =>
+            _selectAllCommand ?? (_selectAllCommand = 
+            new DelegateCommand(ExecuteSelectAllCommand, CanExecuteSelectAllCommand))
+            .ObservesProperty(() => Files);
+
+        private bool CanExecuteSelectAllCommand()
+            => Files.Any();
+
+        void ExecuteSelectAllCommand()
+        {
+            if (SelectAll) Files.ToList().ForEach(f => f.IsSelected = true);
+            else Files.ToList().ForEach(f => f.IsSelected = false);
         }
     }
 }

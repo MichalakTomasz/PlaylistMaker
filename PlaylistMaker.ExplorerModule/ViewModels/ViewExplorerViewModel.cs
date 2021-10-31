@@ -8,11 +8,11 @@ using System.Linq;
 
 namespace PlaylistMaker.Explorer.ViewModels
 {
-    public class ViewAViewModel : BindableBase
+    public class ViewExplorerViewModel : BindableBase
     {
         private readonly IEventAggregator _eventAggregator;
 
-        public ViewAViewModel(IEventAggregator eventAggregator)
+        public ViewExplorerViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }
@@ -27,6 +27,14 @@ namespace PlaylistMaker.Explorer.ViewModels
                 var explorerInfo = new ExplorerInfo
                 {
                     Files = FilesFullPath?.Zip(Filesnames, (fullpath, name) => (fullpath, name))
+                };
+                _eventAggregator.GetEvent<ExplorerEvent>().Publish(explorerInfo);
+            }
+            else
+            {
+                var explorerInfo = new ExplorerInfo
+                {
+                    Files = Enumerable.Empty<(string, string)>()
                 };
                 _eventAggregator.GetEvent<ExplorerEvent>().Publish(explorerInfo);
             }
@@ -45,5 +53,7 @@ namespace PlaylistMaker.Explorer.ViewModels
             get { return _filesNames; }
             set { SetProperty(ref _filesNames, value); }
         }
+
+        public string Filter => ".mp3| .mpc| .ogg";
     }
 }

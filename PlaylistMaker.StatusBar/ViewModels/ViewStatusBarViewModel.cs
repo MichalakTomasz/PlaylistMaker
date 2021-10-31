@@ -4,11 +4,11 @@ using Prism.Mvvm;
 
 namespace PlaylistMaker.StatusBar.ViewModels
 {
-    public class ViewAViewModel : BindableBase
+    public class ViewStatusBarViewModel : BindableBase
     {
         private readonly IEventAggregator _eventAggregator;
 
-        public ViewAViewModel(IEventAggregator eventAggregator)
+        public ViewStatusBarViewModel(IEventAggregator eventAggregator)
         {
             eventAggregator.GetEvent<StatusBarEvent>()
                 .Subscribe(e => ItemsCount = e.ItemsCount);

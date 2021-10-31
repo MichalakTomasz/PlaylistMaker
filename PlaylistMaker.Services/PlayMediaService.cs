@@ -21,7 +21,7 @@ namespace PlaylistMaker.Services
 
         public bool IsOpened => _mediaPlayer != default;
 
-        public IResult Play() => TryCatchExtensions.TryCatch(() => _mediaPlayer.Play());
+        public IResult Play() => TryCatchExtensions.TryCatch(() => _mediaPlayer?.Play());
         public IResult Pause() => TryCatchExtensions.TryCatch(() => _mediaPlayer?.Pause());
         public IResult Stop() => TryCatchExtensions.TryCatch(() => _mediaPlayer?.Stop());
         public double Volume {
