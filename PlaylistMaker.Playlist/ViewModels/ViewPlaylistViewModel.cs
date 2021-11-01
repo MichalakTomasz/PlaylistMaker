@@ -4,10 +4,7 @@ using PlaylistMaker.Wrappers;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PlaylistMaker.Playlist.ViewModels
@@ -24,7 +21,7 @@ namespace PlaylistMaker.Playlist.ViewModels
             eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
             {
                 var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
-                Files = new List<FileAudioWrapper>(wrappers);
+                Files = Files.Concat(wrappers).ToList();
                 eventAggregator.GetEvent<StatusBarEvent>()
                 .Publish(new StatusBarInfo { ItemsCount = Files.Count() });
             }, ThreadOption.UIThread, true);
@@ -32,7 +29,9 @@ namespace PlaylistMaker.Playlist.ViewModels
             eventAggregator.GetEvent<PlaylistEvent>().Subscribe(i =>
             {
                 if (i.MessageType == MessageType.Remove)
-                    Files = Files.Where(f => f.IsSelected).ToList();
+                {
+                    Files = Files.Where(f => !f.IsSelected).ToList();
+                }
             }, ThreadOption.UIThread, true);
         }
 
