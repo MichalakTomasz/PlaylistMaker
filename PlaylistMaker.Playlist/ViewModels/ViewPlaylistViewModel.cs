@@ -1,9 +1,12 @@
 ﻿using PlaylistMaker.Events;
+using PlaylistMaker.Models;
 using PlaylistMaker.Wrappers;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -13,20 +16,29 @@ namespace PlaylistMaker.Playlist.ViewModels
     {
         public ViewPlaylistViewModel(IEventAggregator eventAggregator)
         {
+            DoEvents(eventAggregator);
+        }
 
+        private void DoEvents(IEventAggregator eventAggregator)
+        {
             eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
             {
                 var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
-                Files.Clear();
-                Files.AddRange(wrappers);
+                Files = new List<FileAudioWrapper>(wrappers);
                 eventAggregator.GetEvent<StatusBarEvent>()
-                .Publish(new Models.StatusBarInfo { ItemsCount = Files.Count });
+                .Publish(new StatusBarInfo { ItemsCount = Files.Count() });
+            }, ThreadOption.UIThread, true);
+
+            eventAggregator.GetEvent<PlaylistEvent>().Subscribe(i =>
+            {
+                if (i.MessageType == MessageType.Remove)
+                    Files = Files.Where(f => f.IsSelected).ToList();
             }, ThreadOption.UIThread, true);
         }
 
-        private ObservableCollection<FileAudioWrapper> _files = new ObservableCollection<FileAudioWrapper>();
+        private IEnumerable<FileAudioWrapper> _files = new List<FileAudioWrapper>();
         
-        public ObservableCollection<FileAudioWrapper> Files
+        public IEnumerable<FileAudioWrapper> Files
         {
             get { return _files; }
             set { SetProperty(ref _files, value); }

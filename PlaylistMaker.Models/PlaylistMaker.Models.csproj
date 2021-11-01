@@ -48,6 +48,7 @@
     <Compile Include="IFileAudio.cs" />
     <Compile Include="MainWindowInfo.cs" />
     <Compile Include="MessageType.cs" />
+    <Compile Include="PlaylistEventInfo.cs" />
     <Compile Include="SelectedFilesInfo.cs" />
     <Compile Include="StatusBarInfo.cs" />
     <Compile Include="TagAudio.cs" />

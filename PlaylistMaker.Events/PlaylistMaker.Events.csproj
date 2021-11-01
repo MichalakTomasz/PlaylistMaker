@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ExplorerEvent.cs" />
     <Compile Include="MainWindowEvent.cs" />
+    <Compile Include="PlaylistEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectionEvent.cs" />
     <Compile Include="StatusBarEvent.cs" />

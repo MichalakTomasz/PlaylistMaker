@@ -218,5 +218,14 @@ namespace PlaylistMaker.Files.ViewModels
 
         void ExecutePauseCommand()
             => _playMediaService.Pause();
+        private DelegateCommand _removeCommand;
+        public DelegateCommand RemoveCommand =>
+            _removeCommand ?? (_removeCommand = new DelegateCommand(ExecuteRemoveCommand));
+
+        void ExecuteRemoveCommand()
+        {
+            _eventAggregator.GetEvent<PlaylistEvent>().Publish(
+                new PlaylistEventInfo { MessageType = MessageType.Remove });
+        }
     }
 }

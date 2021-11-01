@@ -97,7 +97,7 @@
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Content="Add"  DockPanel.Dock="Left" Command="{Binding AddFilesCommand}"/>
-            <Button Content="Remove" DockPanel.Dock="Left"/>
+            <Button Content="Remove" Command="{Binding RemoveCommand}" DockPanel.Dock="Left"/>
             <Button Content="Play" Command="{Binding PlayCommand}"/>
             <Button Content="Stop" Command="{Binding StopCommand}"/>
             <Button Content="Pause" Command="{Binding PauseCommand}"/>

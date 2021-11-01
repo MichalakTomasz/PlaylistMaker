@@ -9,6 +9,8 @@
         SetVolume,
         SetBalance,
         SavePlaylist,
-        ClearPlaylist
+        ClearPlaylist,
+        Add,
+        Remove
     }
 }
