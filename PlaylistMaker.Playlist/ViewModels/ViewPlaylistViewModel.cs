@@ -13,30 +13,34 @@ namespace PlaylistMaker.Playlist.ViewModels
     {
         public ViewPlaylistViewModel(IEventAggregator eventAggregator)
         {
-            DoEvents(eventAggregator);
+            _eventAggregator = eventAggregator;
+            DoEvents();
         }
 
-        private void DoEvents(IEventAggregator eventAggregator)
+        private void DoEvents()
         {
-            eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
+            _eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
             {
                 var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
                 Files = Files.Concat(wrappers).ToList();
-                eventAggregator.GetEvent<StatusBarEvent>()
-                .Publish(new StatusBarInfo { ItemsCount = Files.Count() });
+                SendItemsCount();
             }, ThreadOption.UIThread, true);
 
-            eventAggregator.GetEvent<PlaylistEvent>().Subscribe(i =>
+            _eventAggregator.GetEvent<PlaylistEvent>().Subscribe(i =>
             {
                 if (i.MessageType == MessageType.Remove)
                 {
                     Files = Files.Where(f => !f.IsSelected).ToList();
+                    SendItemsCount();
                 }
             }, ThreadOption.UIThread, true);
         }
 
+        private void SendItemsCount()
+            => _eventAggregator.GetEvent<StatusBarEvent>()
+            .Publish(new StatusBarInfo { ItemsCount = Files.Count() });
+
         private IEnumerable<FileAudioWrapper> _files = new List<FileAudioWrapper>();
-        
         public IEnumerable<FileAudioWrapper> Files
         {
             get { return _files; }
@@ -51,6 +55,8 @@ namespace PlaylistMaker.Playlist.ViewModels
         }
 
         private DelegateCommand _selectAllCommand;
+        private readonly IEventAggregator _eventAggregator;
+
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
             new DelegateCommand(ExecuteSelectAllCommand, CanExecuteSelectAllCommand))
