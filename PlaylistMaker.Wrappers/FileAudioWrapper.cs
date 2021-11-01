@@ -31,7 +31,11 @@ namespace PlaylistMaker.Wrappers
         }
 
         public FileAudioWrapper(FileAudio fileAudio)
-            => Model = fileAudio;
+        {
+            Model = fileAudio;
+            ID3v1Tag = new TagId3v1Wrapper(Model.ID3v1Tag);
+            ID3v2Tag = new TagId3v2Wrapper(Model.ID3v2Tag);
+        }
 
         public string FullPath
         {
@@ -44,8 +48,8 @@ namespace PlaylistMaker.Wrappers
             get => GetValue<string>(); 
             set => SetValue(value); 
         }
-        public TagId3v1Wrapper ID3v1Tag { get; set; }
-        public TagId3v2Wrapper ID3v2Tag { get; set; }
+        public TagId3v1Wrapper ID3v1Tag { get; private set; }
+        public TagId3v2Wrapper ID3v2Tag { get; private set; }
 
         private bool _isSelected;
         public bool IsSelected
