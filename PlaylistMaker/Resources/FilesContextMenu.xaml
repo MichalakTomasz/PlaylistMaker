@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ContextMenu x:Key="FilesContextMenu">
+        <MenuItem Header="Add do playlist" Command="{Binding AddToPlaylistCommand}"/>
+        <MenuItem Header="Check item" Command="{Binding CheckItemCommand}"/>
+        <MenuItem Header="Uncheck item" Command="{Binding UncheckItemCommand}"/>
+        <Separator/>
+        <MenuItem Header="Play" Command="{Binding PlayCommand}"/>
+        <MenuItem Header="Stop" Command="{Binding StopCommand}"/>
+    </ContextMenu>
+    
+</ResourceDictionary>

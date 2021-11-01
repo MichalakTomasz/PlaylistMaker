@@ -227,5 +227,38 @@ namespace PlaylistMaker.Files.ViewModels
             _eventAggregator.GetEvent<PlaylistEvent>().Publish(
                 new PlaylistEventInfo { MessageType = MessageType.Remove });
         }
+
+        private DelegateCommand _addToPlaylistCommand;
+        public DelegateCommand AddToPlaylistCommand =>
+            _addToPlaylistCommand ?? (_addToPlaylistCommand = 
+            new DelegateCommand(ExecuteAddToPlaylistCommand));
+
+        void ExecuteAddToPlaylistCommand()
+        {
+            _eventAggregator.GetEvent<SelectionEvent>().Publish( SelectedItems
+                .Cast<FileAudioWrapper>().Select(f => f.Model));
+        }
+
+        private DelegateCommand _checkItemCommand;
+        public DelegateCommand CheckItemCommand =>
+            _checkItemCommand ?? (_checkItemCommand = 
+            new DelegateCommand(ExecuteCheckItemCommand));
+
+        void ExecuteCheckItemCommand()
+        {
+            var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
+            if (selected != default) selected.IsSelected = true;
+        }
+
+        private DelegateCommand _uncheckItemCommand;
+        public DelegateCommand UncheckItemCommand =>
+            _uncheckItemCommand ?? (_uncheckItemCommand = 
+            new DelegateCommand(ExecuteUncheckItemCommand));
+
+        void ExecuteUncheckItemCommand()
+        {
+            var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
+            if (selected != default) selected.IsSelected = false;
+        }
     }
 }
