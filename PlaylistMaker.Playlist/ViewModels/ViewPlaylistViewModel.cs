@@ -4,6 +4,7 @@ using PlaylistMaker.Wrappers;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,21 +55,82 @@ namespace PlaylistMaker.Playlist.ViewModels
             set { SetProperty(ref _selectAll, value); }
         }
 
+        private IList _selectedItems;
+        public IList SelectedItems
+        {
+            get { return _selectedItems; }
+            set { SetProperty(ref _selectedItems, value); }
+        }
+
         private DelegateCommand _selectAllCommand;
         private readonly IEventAggregator _eventAggregator;
 
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
-            new DelegateCommand(ExecuteSelectAllCommand, CanExecuteSelectAllCommand))
+            new DelegateCommand(ExecuteSelectAllCommand, () => Files.Any()))
             .ObservesProperty(() => Files);
-
-        private bool CanExecuteSelectAllCommand()
-            => Files.Any();
 
         void ExecuteSelectAllCommand()
         {
             if (SelectAll) Files.ToList().ForEach(f => f.IsSelected = true);
             else Files.ToList().ForEach(f => f.IsSelected = false);
         }
+
+        private DelegateCommand _removeItemCommand;
+        public DelegateCommand RemoveItemCommand =>
+            _removeItemCommand ?? (_removeItemCommand = 
+            new DelegateCommand(ExecuteRemoveItemCommand));
+
+        void ExecuteRemoveItemCommand()
+        {
+            var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
+            if (selected != default)
+                Files = Files.Where(f => f != selected).ToList();
+        }
+
+        private DelegateCommand _checkItemCommand;
+        public DelegateCommand CheckItemCommand =>
+            _checkItemCommand ?? (_checkItemCommand = 
+            new DelegateCommand(ExecuteCheckItemCommand));
+
+        void ExecuteCheckItemCommand()
+        {
+            var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
+            if (selected != default) selected.IsSelected = true;
+        }
+
+        private DelegateCommand _uncheckItemCommand;
+        public DelegateCommand UncheckItemCommand =>
+            _uncheckItemCommand ?? (_uncheckItemCommand = 
+            new DelegateCommand(ExecuteUncheckItemCommand));
+
+        void ExecuteUncheckItemCommand()
+        {
+            var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
+            if (selected != default) selected.IsSelected = false;
+        }
+
+        private DelegateCommand _removeCheckedItemsCommmand;
+        public DelegateCommand RemoveCheckedItemsCommand =>
+            _removeCheckedItemsCommmand ?? (_removeCheckedItemsCommmand = 
+            new DelegateCommand(ExecuteRemoveCheckedItemsCommand));
+
+        void ExecuteRemoveCheckedItemsCommand()
+            => Files = Files.Where(f => !f.IsSelected).ToList();
+        private DelegateCommand _checkAllCommand;
+        public DelegateCommand CheckAllCommand =>
+            _checkAllCommand ?? (_checkAllCommand = new DelegateCommand(() =>
+            {
+                SelectAll = true;
+                SelectAllCommand.Execute();
+            }));
+
+        private DelegateCommand _unchekcAllCommand;
+        public DelegateCommand UncheckAllCommand =>
+            _unchekcAllCommand ?? (_unchekcAllCommand = new DelegateCommand(() =>
+            {
+                SelectAll = false;
+                SelectAllCommand.Execute();
+            }));
     }
 }

@@ -9,7 +9,6 @@ using Prism.Mvvm;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,6 +43,7 @@ namespace PlaylistMaker.Files.ViewModels
                 var fileAudioWrappers = e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service, playMediaService)).ToList();
                 FileAudioWrappers = fileAudioWrappers;
                 SelectedTab = fileAudioWrappers.Any(f => f.ID3v2Tag.HasTag) ? 1 : 0;
+                SelectAll = false;
             }, ThreadOption.UIThread, true);
 
             eventAggregator.GetEvent<MainWindowEvent>().Subscribe(e =>
@@ -158,6 +158,7 @@ namespace PlaylistMaker.Files.ViewModels
             SelectedFiles = FileAudioWrappers.Where(f => f.IsSelected).Select(f => f.Model).ToList();
             _eventAggregator.GetEvent<SelectionEvent>().Publish(SelectedFiles);
             FileAudioWrappers.ToList().ForEach(f => f.IsSelected = false);
+            SelectAll = false;
         }
 
         bool CanExecuteAddFilesCommand()
