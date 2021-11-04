@@ -1,5 +1,6 @@
 ﻿using PlaylistMaker.Events;
 using PlaylistMaker.Models;
+using PlaylistMaker.Services;
 using PlaylistMaker.Wrappers;
 using Prism.Commands;
 using Prism.Events;
@@ -12,9 +13,14 @@ namespace PlaylistMaker.Playlist.ViewModels
 {
     public class ViewPlaylistViewModel : BindableBase
     {
-        public ViewPlaylistViewModel(IEventAggregator eventAggregator)
+        public ViewPlaylistViewModel(
+            IEventAggregator eventAggregator,
+            ISavePlaylistService savePlaylistService,
+            ISaveDialog saveDialog)
         {
             _eventAggregator = eventAggregator;
+            _savePlaylistService = savePlaylistService;
+            _saveDialog = saveDialog;
             DoEvents();
         }
 
@@ -35,6 +41,12 @@ namespace PlaylistMaker.Playlist.ViewModels
                     SendItemsCount();
                 }
             }, ThreadOption.UIThread, true);
+
+            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(i =>
+            {
+                if (i.MessageType == MessageType.SavePlaylist)
+                    SavePlaylistCommand.Execute();
+            });
         }
 
         private void SendItemsCount()
@@ -113,6 +125,8 @@ namespace PlaylistMaker.Playlist.ViewModels
 
         private DelegateCommand _selectAllCommand;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ISavePlaylistService _savePlaylistService;
+        private readonly ISaveDialog _saveDialog;
 
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
@@ -169,6 +183,7 @@ namespace PlaylistMaker.Playlist.ViewModels
             Files = Files.Where(f => !f.IsSelected).ToList();
             SelectAll = false;
         }
+
         private DelegateCommand _checkAllCommand;
         public DelegateCommand CheckAllCommand =>
             _checkAllCommand ?? (_checkAllCommand = new DelegateCommand(() =>
@@ -192,5 +207,14 @@ namespace PlaylistMaker.Playlist.ViewModels
             IsEnabledUncheckItem = IsEnabledSavePlaylist = IsEnabledRemoveCheckedItems = 
             IsEnabledCheckAll = IsEnabledUncheckAll = Files.Any()));
 
+        private DelegateCommand _savePlaylistCommand;
+        public DelegateCommand SavePlaylistCommand =>
+            _savePlaylistCommand ?? (_savePlaylistCommand = 
+            new DelegateCommand(() =>
+            {
+                var path = _saveDialog.SelectPath();
+                var pathList = Files.Select(f => f.FullPath);
+                _savePlaylistService.SaveAsync(pathList, path);
+            }));
     }
 }

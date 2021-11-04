@@ -30,6 +30,8 @@ namespace PlaylistMaker
             var imapper = CreateMapper();
             containerRegistry.RegisterInstance(imapper);
             containerRegistry.RegisterSingleton<IPlayMediaService, PlayMediaService>();
+            containerRegistry.Register<ISaveDialog, SaveDialog>();
+            containerRegistry.Register<ISavePlaylistService, SavePlaylistService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

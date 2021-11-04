@@ -22,7 +22,7 @@
                 <RibbonButton Label="Stop" Command="{Binding StopCommand}"/>
                 <RibbonButton Label="Prev"/>
                 <RibbonButton Label="Next"/>
-                <RibbonButton Label="Save"/>
+                <RibbonButton Label="Save" Command="{Binding SavePlaylistCommand}"/>
             </RibbonTab>
         </Ribbon>
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" prism:RegionManager.RegionName="explorer" />

@@ -36,9 +36,13 @@ namespace PlaylistMaker.ViewModels
             _stopCommand ?? (_stopCommand = new DelegateCommand(ExecuteStopCommand));
 
         void ExecuteStopCommand()
-            => _eventAggregator.GetEvent<MainWindowEvent>().Publish(new MainWindowInfo { MessageType = MessageType.Stop});
+            => _eventAggregator.GetEvent<MainWindowEvent>().Publish(new MainWindowInfo { MessageType = MessageType.Stop });
 
-        
+        private DelegateCommand _savePlaylistCommand;
+        public DelegateCommand SavePlaylistCommand =>
+            _savePlaylistCommand ?? (_savePlaylistCommand =
+            new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { MessageType = MessageType.SavePlaylist })));
     }
 
 }
