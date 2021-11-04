@@ -134,6 +134,41 @@ namespace PlaylistMaker.Files.ViewModels
             set { SetProperty(ref _selectedItems, value); }
         }
 
+        private bool _isAddToPlaylistEnabled;
+        public bool IsAddToPlaylistEnabled
+        {
+            get { return _isAddToPlaylistEnabled; }
+            set { SetProperty(ref _isAddToPlaylistEnabled, value); }
+        }
+
+        private bool _isCheckEnabled;
+        public bool IsCheckEnabled
+        {
+            get { return _isCheckEnabled; }
+            set { SetProperty(ref _isCheckEnabled, value); }
+        }
+
+        private bool _isUncheckEnabled;
+        public bool IsUncheckEnabled
+        {
+            get { return _isUncheckEnabled; }
+            set { SetProperty(ref _isUncheckEnabled, value); }
+        }
+
+        private bool _isPlayEnabled;
+        public bool IsPlayEnabled
+        {
+            get { return _isPlayEnabled; }
+            set { SetProperty(ref _isPlayEnabled, value); }
+        }
+
+        private bool _isStopEnabled;
+        public bool IsStopEnabled
+        {
+            get { return _isStopEnabled; }
+            set { SetProperty(ref _isStopEnabled, value); }
+        }
+
         private DelegateCommand _selectAllCommand;
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
@@ -260,6 +295,17 @@ namespace PlaylistMaker.Files.ViewModels
         {
             var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
             if (selected != default) selected.IsSelected = false;
+        }
+
+        private DelegateCommand _contextMenuOpeningCommand;
+        public DelegateCommand ContextMenuOpeningCommand =>
+            _contextMenuOpeningCommand ?? (_contextMenuOpeningCommand = new 
+            DelegateCommand(ExecuteContextMenuOpeningCommand));
+
+        void ExecuteContextMenuOpeningCommand()
+        {
+            IsAddToPlaylistEnabled = IsCheckEnabled = IsUncheckEnabled = 
+                IsPlayEnabled = IsStopEnabled = FileAudioWrappers.Any();
         }
     }
 }

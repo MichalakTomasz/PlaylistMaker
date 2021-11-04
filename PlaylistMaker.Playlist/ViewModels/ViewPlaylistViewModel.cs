@@ -31,7 +31,7 @@ namespace PlaylistMaker.Playlist.ViewModels
             {
                 if (i.MessageType == MessageType.Remove)
                 {
-                    Files = Files.Where(f => !f.IsSelected).ToList();
+                    RemoveCheckedItemsCommand.Execute();
                     SendItemsCount();
                 }
             }, ThreadOption.UIThread, true);
@@ -60,6 +60,55 @@ namespace PlaylistMaker.Playlist.ViewModels
         {
             get { return _selectedItems; }
             set { SetProperty(ref _selectedItems, value); }
+        }
+
+        private bool _isEnabledRemoveItem;
+        public bool IsEnabledRemoveItem
+        {
+            get { return _isEnabledRemoveItem; }
+            set { SetProperty(ref _isEnabledRemoveItem, value); }
+        }
+
+        private bool _isEnabledCheckItem;
+        public bool IsEnabledCheckItem
+        {
+            get { return _isEnabledCheckItem; }
+            set { SetProperty(ref _isEnabledCheckItem, value); }
+        }
+
+        private bool _isEnabledUncheckItem;
+        public bool IsEnabledUncheckItem
+        {
+            get { return _isEnabledUncheckItem; }
+            set { SetProperty(ref _isEnabledUncheckItem, value); }
+        }
+
+        private bool _isEnabledSavePlaylist;
+        public bool IsEnabledSavePlaylist
+        {
+            get { return _isEnabledSavePlaylist; }
+            set { SetProperty(ref _isEnabledSavePlaylist, value); }
+        }
+
+        private bool _isEnabledRemoveCheckedItems;
+        public bool IsEnabledRemoveCheckedItems
+        {
+            get { return _isEnabledRemoveCheckedItems; }
+            set { SetProperty(ref _isEnabledRemoveCheckedItems, value); }
+        }
+
+        private bool _isEnabledCheckAll;
+        public bool IsEnabledCheckAll
+        {
+            get { return _isEnabledCheckAll; }
+            set { SetProperty(ref _isEnabledCheckAll, value); }
+        }
+
+        private bool _isEnabledUncheckAll;
+        public bool IsEnabledUncheckAll
+        {
+            get { return _isEnabledUncheckAll; }
+            set { SetProperty(ref _isEnabledUncheckAll, value); }
         }
 
         private DelegateCommand _selectAllCommand;
@@ -116,7 +165,10 @@ namespace PlaylistMaker.Playlist.ViewModels
             new DelegateCommand(ExecuteRemoveCheckedItemsCommand));
 
         void ExecuteRemoveCheckedItemsCommand()
-            => Files = Files.Where(f => !f.IsSelected).ToList();
+        {
+            Files = Files.Where(f => !f.IsSelected).ToList();
+            SelectAll = false;
+        }
         private DelegateCommand _checkAllCommand;
         public DelegateCommand CheckAllCommand =>
             _checkAllCommand ?? (_checkAllCommand = new DelegateCommand(() =>
@@ -132,5 +184,13 @@ namespace PlaylistMaker.Playlist.ViewModels
                 SelectAll = false;
                 SelectAllCommand.Execute();
             }));
+
+        private DelegateCommand _contextMenuOpenedCommand;
+        public DelegateCommand ContextMenuOpenedCommand =>
+            _contextMenuOpenedCommand ?? (_contextMenuOpenedCommand = 
+            new DelegateCommand(() => IsEnabledRemoveItem = IsEnabledCheckItem = 
+            IsEnabledUncheckItem = IsEnabledSavePlaylist = IsEnabledRemoveCheckedItems = 
+            IsEnabledCheckAll = IsEnabledUncheckAll = Files.Any()));
+
     }
 }

@@ -44,13 +44,18 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Remove item" Command="{Binding RemoveItemCommand}"/>
-                    <MenuItem Header="Check item" Command="{Binding CheckItemCommand}"/>
-                    <MenuItem Header="Uncheck item" Command="{Binding UncheckItemCommand}"/>
-                    <MenuItem Header="Save Playlist" Command="{Binding SavePlaylistCommand}"/>
-                    <MenuItem Header="Remove Checked items" Command="{Binding RemoveCheckedItemsCommand}"/>
-                    <MenuItem Header="Uncheck all" Command="{Binding UncheckAllCommand}"/>
-                    <MenuItem Header="Check all" Command="{Binding CheckAllCommand}"/>
+                    <MenuItem Header="Remove item" Command="{Binding RemoveItemCommand}" IsEnabled="{Binding IsEnabledRemoveItem}"/>
+                    <MenuItem Header="Check item" Command="{Binding CheckItemCommand}" IsEnabled="{Binding IsEnabledCheckItem}"/>
+                    <MenuItem Header="Uncheck item" Command="{Binding UncheckItemCommand}" IsEnabled="{Binding IsEnabledUncheckItem}"/>
+                    <MenuItem Header="Save Playlist" Command="{Binding SavePlaylistCommand}" IsEnabled="{Binding IsEnabledSavePlaylist}"/>
+                    <MenuItem Header="Remove Checked items" Command="{Binding RemoveCheckedItemsCommand}" IsEnabled="{Binding IsEnabledRemoveCheckedItems}"/>
+                    <MenuItem Header="Uncheck all" Command="{Binding UncheckAllCommand}" IsEnabled="{Binding IsEnabledUncheckAll}"/>
+                    <MenuItem Header="Check all" Command="{Binding CheckAllCommand}" IsEnabled="{Binding IsEnabledCheckAll}"/>
+                    <be:Interaction.Triggers>
+                        <be:EventTrigger EventName="Opened">
+                            <prism:InvokeCommandAction Command="{Binding ContextMenuOpenedCommand}"/>
+                        </be:EventTrigger>
+                    </be:Interaction.Triggers>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <be:Interaction.Behaviors>

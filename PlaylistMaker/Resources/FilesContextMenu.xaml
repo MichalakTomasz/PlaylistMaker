@@ -1,12 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:prism="http://prismlibrary.com/"
+                    xmlns:be="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:b="clr-namespace:PlaylistMaker.Commons.Behaviors;assembly=PlaylistMaker.Commons">
+    
     <ContextMenu x:Key="FilesContextMenu">
-        <MenuItem Header="Add do playlist" Command="{Binding AddToPlaylistCommand}"/>
-        <MenuItem Header="Check item" Command="{Binding CheckItemCommand}"/>
-        <MenuItem Header="Uncheck item" Command="{Binding UncheckItemCommand}"/>
+        <be:Interaction.Triggers>
+            <be:EventTrigger EventName="Opened">
+                <prism:InvokeCommandAction Command="{Binding ContextMenuOpeningCommand}"/>
+            </be:EventTrigger>
+        </be:Interaction.Triggers>
+        <MenuItem Header="Add do playlist" Command="{Binding AddToPlaylistCommand}" IsEnabled="{Binding IsAddToPlaylistEnabled}"/>
+        <MenuItem Header="Check item" Command="{Binding CheckItemCommand}" IsEnabled="{Binding IsCheckEnabled}"/>
+        <MenuItem Header="Uncheck item" Command="{Binding UncheckItemCommand}" IsEnabled="{Binding IsUncheckEnabled}"/>
         <Separator/>
-        <MenuItem Header="Play" Command="{Binding PlayCommand}"/>
-        <MenuItem Header="Stop" Command="{Binding StopCommand}"/>
+        <MenuItem Header="Play" Command="{Binding PlayCommand}" IsEnabled="{Binding IsPlayEnabled}"/>
+        <MenuItem Header="Stop" Command="{Binding StopCommand}" IsEnabled="{Binding IsStopEnabled}"/>
     </ContextMenu>
     
 </ResourceDictionary>
