@@ -26,8 +26,6 @@
                 <DataGrid ItemsSource="{Binding FileAudioWrappers}" 
                           SelectionMode="Single"
                           AutoGenerateColumns="False" 
-                          RowBackground="Azure" 
-                          AlternatingRowBackground="LightGray" 
                           ContextMenu="{StaticResource FilesContextMenu}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
@@ -63,9 +61,7 @@
             <TabItem Header="ID3v2">
                 <DataGrid ItemsSource="{Binding FileAudioWrappers}" 
                           SelectionMode="Single"
-                          AutoGenerateColumns="False" 
-                          RowBackground="Azure" 
-                          AlternatingRowBackground="LightGray"
+                          AutoGenerateColumns="False"
                           ContextMenu="{StaticResource FilesContextMenu}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>

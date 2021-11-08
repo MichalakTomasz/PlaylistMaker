@@ -13,6 +13,11 @@ namespace PlaylistMaker.Playlist.ViewModels
 {
     public class ViewPlaylistViewModel : BindableBase
     {
+        private DelegateCommand _selectAllCommand;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly ISavePlaylistService _savePlaylistService;
+        private readonly ISaveDialog _saveDialog;
+
         public ViewPlaylistViewModel(
             IEventAggregator eventAggregator,
             ISavePlaylistService savePlaylistService,
@@ -23,35 +28,6 @@ namespace PlaylistMaker.Playlist.ViewModels
             _saveDialog = saveDialog;
             DoEvents();
         }
-
-        private void DoEvents()
-        {
-            _eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
-            {
-                var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
-                Files = Files.Concat(wrappers).ToList();
-                SendItemsCount();
-            }, ThreadOption.UIThread, true);
-
-            _eventAggregator.GetEvent<PlaylistEvent>().Subscribe(i =>
-            {
-                if (i.MessageType == MessageType.Remove)
-                {
-                    RemoveCheckedItemsCommand.Execute();
-                    SendItemsCount();
-                }
-            }, ThreadOption.UIThread, true);
-
-            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(i =>
-            {
-                if (i.MessageType == MessageType.SavePlaylist)
-                    SavePlaylistCommand.Execute();
-            });
-        }
-
-        private void SendItemsCount()
-            => _eventAggregator.GetEvent<StatusBarEvent>()
-            .Publish(new StatusBarInfo { ItemsCount = Files.Count() });
 
         private IEnumerable<FileAudioWrapper> _files = new List<FileAudioWrapper>();
         public IEnumerable<FileAudioWrapper> Files
@@ -123,10 +99,49 @@ namespace PlaylistMaker.Playlist.ViewModels
             set { SetProperty(ref _isEnabledUncheckAll, value); }
         }
 
-        private DelegateCommand _selectAllCommand;
-        private readonly IEventAggregator _eventAggregator;
-        private readonly ISavePlaylistService _savePlaylistService;
-        private readonly ISaveDialog _saveDialog;
+        private void DoEvents()
+        {
+            PopulateGridEvent();
+            RemoveItemsEvent();
+            SavePlaylistEvent();
+        }
+
+        private void SavePlaylistEvent()
+        {
+            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(i =>
+            {
+                if (i.MessageType == MessageType.SavePlaylist)
+                    SavePlaylistCommand.Execute();
+            });
+        }
+
+        private void RemoveItemsEvent()
+        {
+            _eventAggregator.GetEvent<PlaylistEvent>().Subscribe(i =>
+            {
+                if (i.MessageType == MessageType.Remove)
+                    RemoveCheckedItemsCommand.Execute();
+            }, ThreadOption.UIThread, true);
+        }
+
+        private void PopulateGridEvent()
+        {
+            _eventAggregator.GetEvent<SelectionEvent>().Subscribe(files =>
+            {
+                var wrappers = files.Select(f => new FileAudioWrapper(f)).ToList();
+                Files = Files.Concat(wrappers).ToList();
+                SendItemsCount();
+                SendCanSavePlaylist();
+            }, ThreadOption.UIThread, true);
+        }
+
+        private void SendCanSavePlaylist()
+            => _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { CanSavePlaylist = Files.Any() });
+
+        private void SendItemsCount()
+            => _eventAggregator.GetEvent<StatusBarEvent>()
+            .Publish(new StatusBarInfo { ItemsCount = Files.Count() });
 
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
@@ -149,6 +164,7 @@ namespace PlaylistMaker.Playlist.ViewModels
             var selected = SelectedItems.Cast<FileAudioWrapper>().FirstOrDefault();
             if (selected != default)
                 Files = Files.Where(f => f != selected).ToList();
+            SendCanSavePlaylist();
         }
 
         private DelegateCommand _checkItemCommand;
@@ -176,13 +192,13 @@ namespace PlaylistMaker.Playlist.ViewModels
         private DelegateCommand _removeCheckedItemsCommmand;
         public DelegateCommand RemoveCheckedItemsCommand =>
             _removeCheckedItemsCommmand ?? (_removeCheckedItemsCommmand = 
-            new DelegateCommand(ExecuteRemoveCheckedItemsCommand));
-
-        void ExecuteRemoveCheckedItemsCommand()
-        {
-            Files = Files.Where(f => !f.IsSelected).ToList();
-            SelectAll = false;
-        }
+            new DelegateCommand(() =>
+            {
+                Files = Files.Where(f => !f.IsSelected).ToList();
+                SelectAll = false;
+                SendCanSavePlaylist();
+                SendItemsCount();
+            }));
 
         private DelegateCommand _checkAllCommand;
         public DelegateCommand CheckAllCommand =>

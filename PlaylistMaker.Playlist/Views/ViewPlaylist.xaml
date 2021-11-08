@@ -18,9 +18,7 @@
         <DataGrid 
             ItemsSource="{Binding Files}"
             AutoGenerateColumns="False"
-            SelectionMode="Single"
-            RowBackground="Azure"
-            AlternatingRowBackground="LightGray">
+            SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.Header>

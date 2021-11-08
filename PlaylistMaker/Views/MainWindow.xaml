@@ -17,12 +17,10 @@
         </Grid.ColumnDefinitions>
         <Ribbon Grid.Row="0" Grid.ColumnSpan="2">
             <RibbonTab Header="Home">
-                <RibbonButton Label="Play" Command="{Binding PlayCommand}"/>
-                <RibbonButton Label="Pause" Command="{Binding PauseCommand}"/>
-                <RibbonButton Label="Stop" Command="{Binding StopCommand}"/>
-                <RibbonButton Label="Prev"/>
-                <RibbonButton Label="Next"/>
-                <RibbonButton Label="Save" Command="{Binding SavePlaylistCommand}"/>
+                <RibbonButton Label="Play" Command="{Binding PlayCommand}" IsEnabled="{Binding CanPlay}"/>
+                <RibbonButton Label="Pause" Command="{Binding PauseCommand}" IsEnabled="{Binding CanPlay}"/>
+                <RibbonButton Label="Stop" Command="{Binding StopCommand}" IsEnabled="{Binding CanPlay}"/>
+                <RibbonButton Label="Save" Command="{Binding SavePlaylistCommand}" IsEnabled="{Binding CanSavePlaylist}"/>
             </RibbonTab>
         </Ribbon>
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" prism:RegionManager.RegionName="explorer" />

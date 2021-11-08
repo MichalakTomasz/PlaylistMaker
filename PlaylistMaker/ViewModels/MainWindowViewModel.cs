@@ -1,10 +1,9 @@
-﻿using PlaylistMaker.Commons;
-using PlaylistMaker.Events;
+﻿using PlaylistMaker.Events;
 using PlaylistMaker.Models;
-using PlaylistMaker.Services;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System;
 
 namespace PlaylistMaker.ViewModels
 {
@@ -15,28 +14,54 @@ namespace PlaylistMaker.ViewModels
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            DoEvents();
         }
+
+        private bool _canPlay;
+        public bool CanPlay
+        {
+            get { return _canPlay; }
+            set { SetProperty(ref _canPlay, value); }
+        }
+
+        private bool _canSave;
+        public bool CanSavePlaylist
+        {
+            get { return _canSave; }
+            set { SetProperty(ref _canSave, value); }
+        }
+
+        private void DoEvents()
+        {
+            CanPlayEvent();
+            CanSavePlaylistEvent();
+        }
+
+        private void CanSavePlaylistEvent()
+            => _eventAggregator.GetEvent<MainWindowEvent>()
+            .Subscribe(i => CanSavePlaylist = i.CanSavePlaylist);
+
+        private void CanPlayEvent()
+            => _eventAggregator.GetEvent<MainWindowEvent>()
+            .Subscribe(i => CanPlay = i.CanPlay);
 
         private DelegateCommand _playCommand;
         public DelegateCommand PlayCommand =>
-            _playCommand ?? (_playCommand = new DelegateCommand(ExecutePlayCommand));
-
-        void ExecutePlayCommand()
-            => _eventAggregator.GetEvent<MainWindowEvent>().Publish(new MainWindowInfo { MessageType = MessageType.Play });
+            _playCommand ?? (_playCommand = new DelegateCommand(() =>
+            _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { MessageType = MessageType.Play })));
 
         private DelegateCommand _pauseCommand;
         public DelegateCommand PauseCommand =>
-            _pauseCommand ?? (_pauseCommand = new DelegateCommand(ExecutePauseCommand));
-
-        void ExecutePauseCommand()
-            => _eventAggregator.GetEvent<MainWindowEvent>().Publish(new MainWindowInfo { MessageType = MessageType.Pause });
+            _pauseCommand ?? (_pauseCommand = new DelegateCommand(() =>
+                _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { MessageType = MessageType.Pause }))); 
 
         private DelegateCommand _stopCommand;
         public DelegateCommand StopCommand =>
-            _stopCommand ?? (_stopCommand = new DelegateCommand(ExecuteStopCommand));
-
-        void ExecuteStopCommand()
-            => _eventAggregator.GetEvent<MainWindowEvent>().Publish(new MainWindowInfo { MessageType = MessageType.Stop });
+            _stopCommand ?? (_stopCommand = new DelegateCommand(() =>
+            _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { MessageType = MessageType.Stop })));
 
         private DelegateCommand _savePlaylistCommand;
         public DelegateCommand SavePlaylistCommand =>

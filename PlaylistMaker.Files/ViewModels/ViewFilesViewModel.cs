@@ -20,6 +20,8 @@ namespace PlaylistMaker.Files.ViewModels
     public class ViewFilesViewModel : BindableBase
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly IID3Service _iD3V1Service;
+        private readonly IID3Service _iD3V2Service;
         private readonly IPlayMediaService _playMediaService;
         private CancellationToken _cancelProgress;
 
@@ -30,23 +32,26 @@ namespace PlaylistMaker.Files.ViewModels
             IPlayMediaService playMediaService)
         {
             _eventAggregator = eventAggregator;
+            _iD3V1Service = iD3v1Service;
+            _iD3V2Service = iD3v2Service;
             _playMediaService = playMediaService;
 
-            DoEvents(eventAggregator, iD3v1Service, iD3v2Service, playMediaService);
+            DoEvents();
             SetPlayerValues();
         }
 
-        private void DoEvents(IEventAggregator eventAggregator, IID3Service iD3v1Service, IID3Service iD3v2Service, IPlayMediaService playMediaService)
+        private void DoEvents()
         {
-            eventAggregator.GetEvent<ExplorerEvent>().Subscribe(e =>
+            _eventAggregator.GetEvent<ExplorerEvent>().Subscribe(e =>
             {
-                var fileAudioWrappers = e.Files.Select(f => new FileAudioWrapper(f.fullpath, iD3v1Service, iD3v2Service, playMediaService)).ToList();
+                var fileAudioWrappers = e.Files.Select(f => new FileAudioWrapper(f.fullpath, _iD3V1Service, _iD3V2Service, _playMediaService)).ToList();
                 FileAudioWrappers = fileAudioWrappers;
                 SelectedTab = fileAudioWrappers.Any(f => f.ID3v2Tag.HasTag) ? 1 : 0;
+                SendMainWindowNotyficacion();
                 SelectAll = false;
             }, ThreadOption.UIThread, true);
 
-            eventAggregator.GetEvent<MainWindowEvent>().Subscribe(e =>
+            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(e =>
             {
                 var selected = FileAudioWrappers.FirstOrDefault(f => f.IsSelected);
                 if (selected != default)
@@ -61,12 +66,16 @@ namespace PlaylistMaker.Files.ViewModels
                             _playMediaService.Stop();
                             break;
                         case MessageType.Pause:
-                            _playMediaService.Stop();
+                            _playMediaService.Pause();
                             break;
                     }
                 }
             }, ThreadOption.UIThread, true);
         }
+
+        private void SendMainWindowNotyficacion()
+            => _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { CanPlay = FileAudioWrappers.Any() });
 
         private void SetPlayerValues()
         {
@@ -185,7 +194,8 @@ namespace PlaylistMaker.Files.ViewModels
 
         private DelegateCommand _addFilesCommand;
         public DelegateCommand AddFilesCommand =>
-            _addFilesCommand ?? (_addFilesCommand = new DelegateCommand(ExecuteAddFilesCommand, CanExecuteAddFilesCommand))
+            _addFilesCommand ?? (_addFilesCommand = 
+            new DelegateCommand(ExecuteAddFilesCommand, CanExecuteAddFilesCommand))
             .ObservesProperty(() => FileAudioWrappers);
 
         void ExecuteAddFilesCommand()
