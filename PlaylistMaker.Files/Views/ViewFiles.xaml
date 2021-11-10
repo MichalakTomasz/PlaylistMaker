@@ -91,12 +91,23 @@
                     <be:Interaction.Behaviors>
                         <b:SelectedItemsBehavior SelectedItems="{Binding SelectedItems, Mode=OneWayToSource}"/>
                     </be:Interaction.Behaviors>
+                    <be:Interaction.Triggers>
+                        <be:EventTrigger EventName="SelectionChanged">
+                            <be:InvokeCommandAction Command="{Binding SelectionChangedCommand}"/>
+                        </be:EventTrigger>
+                    </be:Interaction.Triggers>
                 </DataGrid>
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Add"  DockPanel.Dock="Left" Command="{Binding AddFilesCommand}"/>
-            <Button Content="Remove" Command="{Binding RemoveCommand}" DockPanel.Dock="Left"/>
+            <Button Content="Add" 
+                    DockPanel.Dock="Left" 
+                    Command="{Binding AddFilesCommand}"
+                    IsEnabled="{Binding IsAddEnabled}"/>
+            <Button Content="Remove" 
+                    Command="{Binding RemoveCommand}" 
+                    DockPanel.Dock="Left"
+                    IsEnabled="{Binding IsRemoveEnabled}"/>
             <Button Content="Play" Command="{Binding PlayCommand}"/>
             <Button Content="Stop" Command="{Binding StopCommand}"/>
             <Button Content="Pause" Command="{Binding PauseCommand}"/>

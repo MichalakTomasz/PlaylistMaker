@@ -165,6 +165,7 @@ namespace PlaylistMaker.Playlist.ViewModels
             if (selected != default)
                 Files = Files.Where(f => f != selected).ToList();
             SendCanSavePlaylist();
+            SendItemsCount();
         }
 
         private DelegateCommand _checkItemCommand;

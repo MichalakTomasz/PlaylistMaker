@@ -16,7 +16,7 @@ namespace PlaylistMaker.Services
             {
                 if (IsOpened) _mediaPlayer.Close();
                 _mediaPlayer = new MediaPlayer();
-                _mediaPlayer.Open(new Uri(fullPath)); 
+                _mediaPlayer.Open(new Uri(fullPath));
             });
 
         public bool IsOpened => _mediaPlayer != default;

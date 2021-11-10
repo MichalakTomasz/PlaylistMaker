@@ -9,24 +9,16 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Grid>
-                        <Border BorderThickness="1" BorderBrush="DarkGray">
-                            <Grid>
-                                <Rectangle>
-                                    <Rectangle.Fill>
-                                        <LinearGradientBrush 
-                                            StartPoint="0 .5"
-                                            EndPoint="1 .5">
-                                            <GradientStop Color="LightGray" Offset="0"/>
-                                            <GradientStop Color="DarkGray" Offset=".5"/>
-                                        </LinearGradientBrush>
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                                <ContentControl 
-                                    Content="{TemplateBinding DataGridColumnHeader.Content}"
-                                    Padding="10"
-                                    Margin="5"/>
-                            </Grid>
+                        <Border
+                            BorderThickness="1"
+                            BorderBrush="DarkGray">
+                            <Rectangle Fill="{StaticResource VeryDarkGray}"/>
                         </Border>
+                        <ContentControl 
+                            Content="{TemplateBinding DataGridColumnHeader.Content}"
+                            Padding="10"
+                            Margin="5"
+                            Foreground="White"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

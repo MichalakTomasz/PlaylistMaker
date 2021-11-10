@@ -6,7 +6,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/ResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/ColorsDictionary.xaml"/>
+                <ResourceDictionary Source="/Resources/ControlsDictionary.xaml"/>
                 <ResourceDictionary Source="/Resources/ExplorerIcons.xaml"/>
                 <ResourceDictionary Source="/Resources/FilesContextMenu.xaml"/>
                 <ResourceDictionary Source="/Resources/Styles.xaml"/>

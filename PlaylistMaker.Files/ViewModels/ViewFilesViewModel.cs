@@ -47,6 +47,7 @@ namespace PlaylistMaker.Files.ViewModels
                 var fileAudioWrappers = e.Files.Select(f => new FileAudioWrapper(f.fullpath, _iD3V1Service, _iD3V2Service, _playMediaService)).ToList();
                 FileAudioWrappers = fileAudioWrappers;
                 SelectedTab = fileAudioWrappers.Any(f => f.ID3v2Tag.HasTag) ? 1 : 0;
+                IsAddEnabled = fileAudioWrappers.Any();
                 SendMainWindowNotyficacion();
                 SelectAll = false;
             }, ThreadOption.UIThread, true);
@@ -59,8 +60,7 @@ namespace PlaylistMaker.Files.ViewModels
                     switch (e.MessageType)
                     {
                         case MessageType.Play:
-                            _playMediaService.Open(selected.FullPath);
-                            _playMediaService.Play();
+                            Play(selected.FullPath);
                             break;
                         case MessageType.Stop:
                             _playMediaService.Stop();
@@ -71,6 +71,17 @@ namespace PlaylistMaker.Files.ViewModels
                     }
                 }
             }, ThreadOption.UIThread, true);
+
+            _eventAggregator.GetEvent<StatusBarEvent>()
+                .Subscribe(e => IsRemoveEnabled = e.ItemsCount > 0, 
+                ThreadOption.UIThread, true);
+        }
+
+        private void Play(string path)
+        {
+            if (!_playMediaService.IsOpened)
+                _playMediaService.Open(path);
+            _playMediaService.Play();
         }
 
         private void SendMainWindowNotyficacion()
@@ -178,6 +189,20 @@ namespace PlaylistMaker.Files.ViewModels
             set { SetProperty(ref _isStopEnabled, value); }
         }
 
+        private bool _isAddEnabled;
+        public bool IsAddEnabled
+        {
+            get { return _isAddEnabled; }
+            set { SetProperty(ref _isAddEnabled, value); }
+        }
+
+        private bool _isRemoveEnabled;
+        public bool IsRemoveEnabled
+        {
+            get { return _isRemoveEnabled; }
+            set { SetProperty(ref _isRemoveEnabled, value); }
+        }
+
         private DelegateCommand _selectAllCommand;
         public DelegateCommand SelectAllCommand =>
             _selectAllCommand ?? (_selectAllCommand = 
@@ -211,21 +236,16 @@ namespace PlaylistMaker.Files.ViewModels
         
         private DelegateCommand _playCommand;
         public DelegateCommand PlayCommand =>
-            _playCommand ?? (_playCommand = new DelegateCommand(ExecutePlayCommand, CanExecutePlayCommand));
-
-        void ExecutePlayCommand()
-        {
-            var selected = SelectedItems.Cast<FileAudioWrapper>().First();
-            if (selected != default)
+            _playCommand ?? (_playCommand = new DelegateCommand(() =>
             {
-                _playMediaService.Open(selected.FullPath);
-                _playMediaService.Play();
-                PushProgress(_cancelProgress);
-            }
-        }
-
-        bool CanExecutePlayCommand()
-            => true;
+                var selected = SelectedItems.Cast<FileAudioWrapper>().First();
+                if (selected != default)
+                {
+                    Play(selected.FullPath);
+                    PushProgress(_cancelProgress);
+                }
+            }, () => SelectedItems?.Count > 0))
+            .ObservesProperty(() => SelectedItems);
 
         private DelegateCommand _stopCommad;
         public DelegateCommand StopCommand =>
@@ -317,5 +337,10 @@ namespace PlaylistMaker.Files.ViewModels
             IsAddToPlaylistEnabled = IsCheckEnabled = IsUncheckEnabled = 
                 IsPlayEnabled = IsStopEnabled = FileAudioWrappers.Any();
         }
+
+        private DelegateCommand _selectionChangedCommand;
+        public DelegateCommand SelectionChangedCommand =>
+            _selectionChangedCommand ?? (_selectionChangedCommand = 
+            new DelegateCommand(() => SendMainWindowNotyficacion()));
     }
 }
