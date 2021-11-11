@@ -24,4 +24,41 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="TabItem">
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Grid>
+                                <Border
+                                    BorderThickness="1 5 1 0"
+                                    BorderBrush="DarkSlateGray"
+                                    Padding="5">
+                                    <ContentPresenter Content="{TemplateBinding TabItem.Header}"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="False">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Grid>
+                                <Border
+                                    BorderThickness="1 1 1 0"
+                                    BorderBrush="LightSlateGray"
+                                    Padding="5 8 5 5"
+                                    Background="#e8eaed">
+                                    <ContentPresenter Content="{TemplateBinding TabItem.Header}"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
