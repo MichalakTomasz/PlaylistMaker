@@ -9,5 +9,6 @@
         public const string id3v1 = "id3v1";
         public const string id3v2 = "id3v2";
         public const string statusBar = "statusBar";
+        public const string filesFilterString = "Playlist (*.m3u)| *.m3u";
     }
 }

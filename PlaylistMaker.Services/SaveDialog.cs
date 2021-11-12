@@ -8,11 +8,13 @@ namespace PlaylistMaker.Services
         {
             var saveDialog = new SaveFileDialog
             {
-                Filter = "Playlist (*.m3u)| *.m3u"
+                Filter = Filter
             };
 
             saveDialog.ShowDialog();
             return saveDialog.FileName;
         }
+
+        public string Filter { get; set; }
     }
 }

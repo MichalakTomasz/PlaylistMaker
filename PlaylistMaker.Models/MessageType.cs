@@ -8,6 +8,7 @@
         Pause,
         SetVolume,
         SetBalance,
+        LoadPlaylist,
         SavePlaylist,
         ClearPlaylist,
         Add,

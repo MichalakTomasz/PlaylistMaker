@@ -1,4 +1,5 @@
-﻿using PlaylistMaker.Events;
+﻿using PlaylistMaker.Commons;
+using PlaylistMaker.Events;
 using PlaylistMaker.Models;
 using PlaylistMaker.Services;
 using PlaylistMaker.Wrappers;
@@ -8,6 +9,7 @@ using Prism.Mvvm;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity;
 
 namespace PlaylistMaker.Playlist.ViewModels
 {
@@ -17,15 +19,30 @@ namespace PlaylistMaker.Playlist.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly ISavePlaylistService _savePlaylistService;
         private readonly ISaveDialog _saveDialog;
+        private readonly ILoadDialog _loadDialog;
+        private readonly ILoadPlaylistService _loadPlaylistService;
+        private readonly IID3Service _id3v1Service;
+        private readonly IID3Service _id3v2Service;
+        private readonly IPlayMediaService _playMediaService;
 
         public ViewPlaylistViewModel(
             IEventAggregator eventAggregator,
             ISavePlaylistService savePlaylistService,
-            ISaveDialog saveDialog)
+            ISaveDialog saveDialog,
+            ILoadDialog loadDialog,
+            ILoadPlaylistService loadPlaylistService,
+            [Dependency(Literals.id3v1)] IID3Service id3v1Service,
+            [Dependency(Literals.id3v2)] IID3Service id3v2Service,
+            IPlayMediaService playMediaService)
         {
             _eventAggregator = eventAggregator;
             _savePlaylistService = savePlaylistService;
             _saveDialog = saveDialog;
+            _loadDialog = loadDialog;
+            _loadPlaylistService = loadPlaylistService;
+            _id3v1Service = id3v1Service;
+            _id3v2Service = id3v2Service;
+            _playMediaService = playMediaService;
             DoEvents();
         }
 
@@ -103,15 +120,29 @@ namespace PlaylistMaker.Playlist.ViewModels
         {
             PopulateGridEvent();
             RemoveItemsEvent();
-            SavePlaylistEvent();
+            DoMainWindowEvents();
         }
 
-        private void SavePlaylistEvent()
+        private void DoMainWindowEvents()
         {
-            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(i =>
+            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(async i =>
             {
-                if (i.MessageType == MessageType.SavePlaylist)
-                    SavePlaylistCommand.Execute();
+                switch (i.MessageType)
+                {
+                    case MessageType.LoadPlaylist:
+                        _loadDialog.Filter = Literals.filesFilterString;
+                        var path = _loadDialog.Load();
+                        var playlistResult = await _loadPlaylistService.LoadAsync(path);
+                        if (!playlistResult.Success)
+                            return;
+                        var playlist = playlistResult.Value;
+                            Files = playlist.Select(p =>
+                            new FileAudioWrapper(p, _id3v1Service, _id3v2Service, _playMediaService)).ToList();
+                        break;
+                    case MessageType.SavePlaylist:
+                        SavePlaylistCommand.Execute();
+                        break;
+                }
             });
         }
 
@@ -229,6 +260,7 @@ namespace PlaylistMaker.Playlist.ViewModels
             _savePlaylistCommand ?? (_savePlaylistCommand = 
             new DelegateCommand(() =>
             {
+                _saveDialog.Filter = Literals.filesFilterString;
                 var path = _saveDialog.SelectPath();
                 var pathList = Files.Select(f => f.FullPath);
                 _savePlaylistService.SaveAsync(pathList, path);

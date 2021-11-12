@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlaylistMaker.Commons
 {
@@ -31,6 +27,7 @@ namespace PlaylistMaker.Commons
             {
                 return Result.Error<T>(!string.IsNullOrEmpty(message) ? message : e.Message);
             }
+        
         }
         public static IResult TryCatch<T>(this T value, Action<T> action, string message = "")
         {

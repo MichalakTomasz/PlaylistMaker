@@ -32,6 +32,9 @@ namespace PlaylistMaker
             containerRegistry.RegisterSingleton<IPlayMediaService, PlayMediaService>();
             containerRegistry.Register<ISaveDialog, SaveDialog>();
             containerRegistry.Register<ISavePlaylistService, SavePlaylistService>();
+            containerRegistry.Register<ILoadPlaylistService, LoadPlaylistService>();
+            containerRegistry.Register<ILoadDialog, LoadDialog>();
+            containerRegistry.Register<IExitService, ExitService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

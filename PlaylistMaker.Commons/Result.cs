@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace PlaylistMaker.Commons
 {
@@ -12,7 +8,8 @@ namespace PlaylistMaker.Commons
         public static IResult Ok(string message) => new ResultIntern { Message = message, Success = true };
         public static IResult Error() => new ResultIntern { Success = false };
         public static IResult Error(string message) => new ResultIntern { Success = false, Message = message };
-        public static IResult<T> Ok<T>(T arg) => new ResultIntern<T> { Value = arg, Success = true};
+        public static IResult<T> Ok<T>(T arg) => new ResultIntern<T> { Value = arg, Success = true };// (new ResultIntern<T>()).Ok(arg);
+        public static async Task<IResult<T>> OkAsync<T>(Task<T> arg) => new ResultIntern<T> { Value = await arg, Success = true };
         public static IResult<T> Ok<T>(T arg, string message) => new ResultIntern<T> { Value = arg, Success = true, Message = message };
         public static IResult<T> Error<T>(string message) => new ResultIntern<T> { Message = message, Success = false };
         
@@ -44,14 +41,21 @@ namespace PlaylistMaker.Commons
 
         class ResultIntern<T> : ResultIntern, IResult<T>
         {
-            public T Value = default;
+            public T Value;
 
-            T IResult<T>.Value => default;
+            T IResult<T>.Value => Value;
 
             public IResult<T> Ok(T value)
             {
                 Success = true;
                 Value = value;
+                return this;
+            }
+
+            public async Task<IResult<T>>OkAsync(Task<T> value)
+            {
+                Success = true;
+                Value = await value;
                 return this;
             }
 
@@ -64,4 +68,5 @@ namespace PlaylistMaker.Commons
             }
         }
     }
+
 }

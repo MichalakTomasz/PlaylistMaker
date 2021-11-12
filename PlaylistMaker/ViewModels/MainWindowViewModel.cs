@@ -1,5 +1,6 @@
 ﻿using PlaylistMaker.Events;
 using PlaylistMaker.Models;
+using PlaylistMaker.Services;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -10,10 +11,12 @@ namespace PlaylistMaker.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly IExitService _exitService;
 
-        public MainWindowViewModel(IEventAggregator eventAggregator)
+        public MainWindowViewModel(IEventAggregator eventAggregator, IExitService exitService)
         {
             _eventAggregator = eventAggregator;
+            _exitService = exitService;
             DoEvents();
         }
 
@@ -55,7 +58,7 @@ namespace PlaylistMaker.ViewModels
         public DelegateCommand PauseCommand =>
             _pauseCommand ?? (_pauseCommand = new DelegateCommand(() =>
                 _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { MessageType = MessageType.Pause }))); 
+            .Publish(new MainWindowInfo { MessageType = MessageType.Pause })));
 
         private DelegateCommand _stopCommand;
         public DelegateCommand StopCommand =>
@@ -68,6 +71,16 @@ namespace PlaylistMaker.ViewModels
             _savePlaylistCommand ?? (_savePlaylistCommand =
             new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowEvent>()
             .Publish(new MainWindowInfo { MessageType = MessageType.SavePlaylist })));
-    }
 
+        private DelegateCommand _loadPlaylistCommand;
+        public DelegateCommand LoadPlaylistCommand =>
+            _loadPlaylistCommand ?? (_loadPlaylistCommand =
+            new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowEvent>()
+            .Publish(new MainWindowInfo { MessageType = MessageType.LoadPlaylist })));
+
+        private DelegateCommand _exitCommand;
+        public DelegateCommand ExitCommand =>
+            _exitCommand ?? (_exitCommand = new DelegateCommand(() => _exitService.Exit()));
+
+    }
 }

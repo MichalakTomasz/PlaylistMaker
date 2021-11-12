@@ -60,16 +60,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExitService.cs" />
     <Compile Include="ID3V1Genres.cs" />
     <Compile Include="ID3V1Service.cs" />
     <Compile Include="ID3V2Service.cs" />
+    <Compile Include="IExitService.cs" />
     <Compile Include="IID3Genres.cs" />
     <Compile Include="IID3Service.cs" />
     <Compile Include="IID3V2ImageService.cs" />
+    <Compile Include="ILoadDialog.cs" />
+    <Compile Include="ILoadPlaylistService.cs" />
     <Compile Include="ILogService.cs" />
     <Compile Include="IPlayMediaService.cs" />
     <Compile Include="ISaveDialog.cs" />
     <Compile Include="ISavePlaylistService.cs" />
+    <Compile Include="LoadDialog.cs" />
+    <Compile Include="LoadPlaylistService.cs" />
     <Compile Include="LogService.cs" />
     <Compile Include="PlayMediaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

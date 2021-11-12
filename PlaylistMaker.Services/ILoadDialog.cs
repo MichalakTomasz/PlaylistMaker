@@ -1,8 +1,8 @@
 ﻿namespace PlaylistMaker.Services
 {
-    public interface ISaveDialog
+    public interface ILoadDialog
     {
-        string SelectPath();
+        string Load();
         public string Filter { get; set; }
     }
 }
