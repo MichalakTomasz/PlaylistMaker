@@ -52,12 +52,12 @@ namespace PlaylistMaker.Files.ViewModels
                 SelectAll = false;
             }, ThreadOption.UIThread, true);
 
-            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(e =>
+            _eventAggregator.GetEvent<MainWindowActionEvent>().Subscribe(messageType =>
             {
                 var selected = FileAudioWrappers.FirstOrDefault(f => f.IsSelected);
                 if (selected != default)
                 {
-                    switch (e.MessageType)
+                    switch (messageType)
                     {
                         case MessageType.Play:
                             Play(selected.FullPath);
@@ -85,8 +85,8 @@ namespace PlaylistMaker.Files.ViewModels
         }
 
         private void SendMainWindowNotyficacion()
-            => _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { CanPlay = FileAudioWrappers.Any() });
+            => _eventAggregator.GetEvent<CanPlayEvent>()
+            .Publish(FileAudioWrappers.Any());
 
         private void SetPlayerValues()
         {
@@ -301,7 +301,7 @@ namespace PlaylistMaker.Files.ViewModels
 
         void ExecuteAddToPlaylistCommand()
         {
-            _eventAggregator.GetEvent<SelectionEvent>().Publish( SelectedItems
+            _eventAggregator.GetEvent<SelectionEvent>().Publish( SelectedItems?
                 .Cast<FileAudioWrapper>().Select(f => f.Model));
         }
 

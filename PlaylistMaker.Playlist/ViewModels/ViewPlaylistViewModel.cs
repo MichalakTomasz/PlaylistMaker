@@ -125,9 +125,9 @@ namespace PlaylistMaker.Playlist.ViewModels
 
         private void DoMainWindowEvents()
         {
-            _eventAggregator.GetEvent<MainWindowEvent>().Subscribe(async i =>
+            _eventAggregator.GetEvent<MainWindowActionEvent>().Subscribe(messageType =>
             {
-                switch (i.MessageType)
+                switch (messageType)
                 {
                     case MessageType.LoadPlaylist:
                         LoadPlaylistCommand.Execute();
@@ -160,8 +160,8 @@ namespace PlaylistMaker.Playlist.ViewModels
         }
 
         private void SendCanSavePlaylist()
-            => _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { CanSavePlaylist = Files.Any() });
+            => _eventAggregator.GetEvent<CanSaveEvent>()
+            .Publish(Files.Any());
 
         private void SendItemsCount()
             => _eventAggregator.GetEvent<StatusBarEvent>()

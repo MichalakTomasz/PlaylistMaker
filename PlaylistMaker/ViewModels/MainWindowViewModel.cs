@@ -41,42 +41,42 @@ namespace PlaylistMaker.ViewModels
         }
 
         private void CanSavePlaylistEvent()
-            => _eventAggregator.GetEvent<MainWindowEvent>()
-            .Subscribe(i => CanSavePlaylist = i.CanSavePlaylist);
+            => _eventAggregator.GetEvent<CanSaveEvent>()
+            .Subscribe(canSave => CanSavePlaylist = canSave);
 
         private void CanPlayEvent()
-            => _eventAggregator.GetEvent<MainWindowEvent>()
-            .Subscribe(i => CanPlay = i.CanPlay);
+            => _eventAggregator.GetEvent<CanPlayEvent>()
+            .Subscribe(canPlay => CanPlay = canPlay);
 
         private DelegateCommand _playCommand;
         public DelegateCommand PlayCommand =>
             _playCommand ?? (_playCommand = new DelegateCommand(() =>
-            _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { MessageType = MessageType.Play })));
+            _eventAggregator.GetEvent<MainWindowActionEvent>()
+            .Publish(MessageType.Play)));
 
         private DelegateCommand _pauseCommand;
         public DelegateCommand PauseCommand =>
             _pauseCommand ?? (_pauseCommand = new DelegateCommand(() =>
-                _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { MessageType = MessageType.Pause })));
+                _eventAggregator.GetEvent<MainWindowActionEvent>()
+            .Publish(MessageType.Pause)));
 
         private DelegateCommand _stopCommand;
         public DelegateCommand StopCommand =>
             _stopCommand ?? (_stopCommand = new DelegateCommand(() =>
-            _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { MessageType = MessageType.Stop })));
+            _eventAggregator.GetEvent<MainWindowActionEvent>()
+            .Publish(MessageType.Stop)));
 
         private DelegateCommand _savePlaylistCommand;
         public DelegateCommand SavePlaylistCommand =>
             _savePlaylistCommand ?? (_savePlaylistCommand =
-            new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { MessageType = MessageType.SavePlaylist })));
+            new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowActionEvent>()
+            .Publish(MessageType.SavePlaylist)));
 
         private DelegateCommand _loadPlaylistCommand;
         public DelegateCommand LoadPlaylistCommand =>
             _loadPlaylistCommand ?? (_loadPlaylistCommand =
-            new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowEvent>()
-            .Publish(new MainWindowInfo { MessageType = MessageType.LoadPlaylist })));
+            new DelegateCommand(() => _eventAggregator.GetEvent<MainWindowActionEvent>()
+            .Publish(MessageType.LoadPlaylist)));
 
         private DelegateCommand _exitCommand;
         public DelegateCommand ExitCommand =>

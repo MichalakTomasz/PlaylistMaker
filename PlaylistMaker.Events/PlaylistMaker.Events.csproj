@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanPlayEvent.cs" />
+    <Compile Include="CanSaveEvent.cs" />
     <Compile Include="ExplorerEvent.cs" />
-    <Compile Include="MainWindowEvent.cs" />
+    <Compile Include="MainWindowActionEvent.cs" />
     <Compile Include="PlaylistEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectionEvent.cs" />
