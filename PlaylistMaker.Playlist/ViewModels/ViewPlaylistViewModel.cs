@@ -130,14 +130,7 @@ namespace PlaylistMaker.Playlist.ViewModels
                 switch (i.MessageType)
                 {
                     case MessageType.LoadPlaylist:
-                        _loadDialog.Filter = Literals.filesFilterString;
-                        var path = _loadDialog.Load();
-                        var playlistResult = await _loadPlaylistService.LoadAsync(path);
-                        if (!playlistResult.Success)
-                            return;
-                        var playlist = playlistResult.Value;
-                            Files = playlist.Select(p =>
-                            new FileAudioWrapper(p, _id3v1Service, _id3v2Service, _playMediaService)).ToList();
+                        LoadPlaylistCommand.Execute();
                         break;
                     case MessageType.SavePlaylist:
                         SavePlaylistCommand.Execute();
@@ -264,6 +257,20 @@ namespace PlaylistMaker.Playlist.ViewModels
                 var path = _saveDialog.SelectPath();
                 var pathList = Files.Select(f => f.FullPath);
                 _savePlaylistService.SaveAsync(pathList, path);
+            }));
+
+        private DelegateCommand _loadPlaylistCommand;
+        public DelegateCommand LoadPlaylistCommand =>
+            _loadPlaylistCommand ?? (_loadPlaylistCommand = new DelegateCommand(async () =>
+            {
+                _loadDialog.Filter = Literals.filesFilterString;
+                var path = _loadDialog.Load();
+                var playlistResult = await _loadPlaylistService.LoadAsync(path);
+                if (!playlistResult.Success)
+                    return;
+                var playlist = playlistResult.Value;
+                Files = playlist.Select(p =>
+                new FileAudioWrapper(p, _id3v1Service, _id3v2Service, _playMediaService)).ToList();
             }));
     }
 }

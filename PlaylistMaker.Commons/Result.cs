@@ -10,7 +10,6 @@
         public static IResult<T> Ok<T>(T arg, string message) => new ResultIntern<T> { Value = arg, Success = true, Message = message };
         public static IResult<T> Error<T>(string message) => new ResultIntern<T> { Message = message, Success = false };
         
-
         class ResultIntern : IResult
         {
             public string Message { get;  set; } = "";
@@ -23,5 +22,4 @@
             T IResult<T>.Value => Value;
         }
     }
-
 }

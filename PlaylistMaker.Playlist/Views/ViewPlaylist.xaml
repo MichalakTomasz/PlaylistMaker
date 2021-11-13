@@ -45,6 +45,7 @@
                     <MenuItem Header="Remove item" Command="{Binding RemoveItemCommand}" IsEnabled="{Binding IsEnabledRemoveItem}"/>
                     <MenuItem Header="Check item" Command="{Binding CheckItemCommand}" IsEnabled="{Binding IsEnabledCheckItem}"/>
                     <MenuItem Header="Uncheck item" Command="{Binding UncheckItemCommand}" IsEnabled="{Binding IsEnabledUncheckItem}"/>
+                    <MenuItem Header="Load Playlist" Command="{Binding LoadPlaylistCommand}"/>
                     <MenuItem Header="Save Playlist" Command="{Binding SavePlaylistCommand}" IsEnabled="{Binding IsEnabledSavePlaylist}"/>
                     <MenuItem Header="Remove Checked items" Command="{Binding RemoveCheckedItemsCommand}" IsEnabled="{Binding IsEnabledRemoveCheckedItems}"/>
                     <MenuItem Header="Uncheck all" Command="{Binding UncheckAllCommand}" IsEnabled="{Binding IsEnabledUncheckAll}"/>
