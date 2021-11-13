@@ -23,7 +23,7 @@
                         Command="{Binding LoadPlaylistCommand, Mode=OneTime}"/>
                     <RibbonApplicationMenuItem 
                         Header="Save" 
-                        Command="{Binding SavePlaylistCommand, Mode=OneTime}"/>
+                        Command="{Binding SavePlaylistCommand, Mode=OneTime}" IsEnabled="{Binding CanSavePlaylist}"/>
                     <RibbonApplicationMenuItem 
                         Header="Exit" 
                         Command="{Binding ExitCommand, Mode=OneTime}"/>
