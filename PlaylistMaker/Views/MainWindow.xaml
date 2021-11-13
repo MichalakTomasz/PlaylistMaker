@@ -30,10 +30,17 @@
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
             <RibbonTab Header="Home">
-                <RibbonButton Label="Play" Command="{Binding PlayCommand}" IsEnabled="{Binding CanPlay}"/>
-                <RibbonButton Label="Pause" Command="{Binding PauseCommand}" IsEnabled="{Binding CanPlay}"/>
-                <RibbonButton Label="Stop" Command="{Binding StopCommand}" IsEnabled="{Binding CanPlay}"/>
-                <RibbonButton Label="Save" Command="{Binding SavePlaylistCommand}" IsEnabled="{Binding CanSavePlaylist}"/>
+                <RibbonGroup Header="Playlist">
+                    <RibbonButton Label="Load" Command="{Binding LoadPlaylistCommand, Mode=OneTime}"/>
+                    <RibbonButton Label="Save" Command="{Binding SavePlaylistCommand}" IsEnabled="{Binding CanSavePlaylist}"/>
+                </RibbonGroup>
+                <RibbonGroup Header="Playing">
+                    <RibbonButton Label="Play" Command="{Binding PlayCommand}" IsEnabled="{Binding CanPlay}"/>
+                    <RibbonButton Label="Pause" Command="{Binding PauseCommand}" IsEnabled="{Binding CanPlay}"/>
+                    <RibbonButton Label="Stop" Command="{Binding StopCommand}" IsEnabled="{Binding CanPlay}"/>
+                    
+                </RibbonGroup>
+                
             </RibbonTab>
         </Ribbon>
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" prism:RegionManager.RegionName="explorer" />
